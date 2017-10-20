@@ -3,6 +3,7 @@
 #include <netinet/ip.h>
 #include <stdio.h>
 #include <pcap.h>
+#include "fct_ethernet.h"
 
 
 void got_packets(u_char* args,const struct pcap_pkthdr* header, const u_char* packet)
