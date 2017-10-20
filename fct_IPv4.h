@@ -4,6 +4,6 @@
 #include <netinet/ip.h>
 
 
-void treatIPv4(struct iphdr* entete);
+void treatIPv4(struct ip* entete);
 
 #endif
