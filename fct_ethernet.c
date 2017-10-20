@@ -15,24 +15,30 @@ void printEthAddr(u_int8_t addr[])
 }
 
 
-void treatEthernet(struct ether_header* entete)
+void treatEthernet(void* entete)
 {
+
+	struct ether_header* enteteEth = (struct ether_header*)entete;
+
 	printf("Adresse dest\t");
-	printEthAddr(entete->ether_dhost);
+	printEthAddr(enteteEth->ether_dhost);
 	printf("\tAdresse src\t");
-	printEthAddr(entete->ether_shost);
+	printEthAddr(enteteEth->ether_shost);
 
 
 	printf("\t");
-	printf("%x\n",ntohs(entete->ether_type));
+	printf("%x\n",ntohs(enteteEth->ether_type));
 
-	struct iphdr* enteteIP;
 
-	switch(entete->ether_type)
+	//TODO CRC
+
+	void* enteteNiv3;
+
+	switch(enteteEth->ether_type)
 	{
 		case 0x0008:
-			enteteIP = (struct iphdr*)((void*)entete+sizeof(struct ether_header));
-			treatIPv4(enteteIP);
+			enteteNiv3 = entete+sizeof(struct ether_header);
+			treatIPv4(enteteNiv3);
 			break;
 		case 0xdd86:
 			//treatIPv6(enteteIP);

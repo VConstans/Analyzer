@@ -10,7 +10,7 @@
 
 
 void printEthAddr(u_int8_t addr[]);
-void treatEthernet(struct ether_header* entete);
+void treatEthernet(void* entete);
 
 
 #endif

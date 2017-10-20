@@ -20,33 +20,44 @@ void printIPv4Addr(u_int32_t addr)
 
 		addr = addr>>8;
 	}	
+	printf("\n");
 }
 
-void treatIPv4(struct iphdr* entete)
+void treatIPv4(void* entete)
 {
-	printf("Version %d\n",entete->version);
 
-	int taille_entete = entete->ihl;
-	printf("IHL %d\n",taille_entete);
+	struct iphdr* enteteIP = (struct iphdr*)entete;
 
+	printf("Version %d\n",enteteIP->version);
 
-	printf("TOS %x\n", entete->tos);
+	printf("IHL %d\n",enteteIP->ihl);
 
-	printf("Total length %d\n",entete->tot_len);
+	printf("TOS %x\n", enteteIP->tos);
 
-	printf("Identification %x\n",entete->id);
+	printf("Total length %d\n",enteteIP->tot_len);
 
-	printf("Fragment Offset %x\n",entete->frag_off);
+	printf("Identification %x\n",enteteIP->id);
 
-	printf("TTL %d\n",entete->ttl);
+	printf("Fragment Offset %x\n",enteteIP->frag_off);
 
-	printf("Protocol %x\n",entete->protocol);
+	printf("TTL %d\n",enteteIP->ttl);
 
-	printf("Checksum %x\n",entete->check);
+	printf("Protocol %x\n",enteteIP->protocol);
+
+	printf("Checksum %x\n",enteteIP->check);
 
 	printf("Adresse source ");
 
-	printIPv4Addr(entete->saddr);
+	printIPv4Addr(enteteIP->saddr);
 
-	printf("\n");
+	printf("Adresse destination ");
+	printIPv4Addr(enteteIP->daddr);
+
+	if(enteteIP->ihl > 5)
+	{
+		//TODO traitement options
+	}
+
+	
+
 }

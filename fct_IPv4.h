@@ -7,6 +7,7 @@
 #include <arpa/inet.h>
 
 
-void treatIPv4(struct iphdr* entete);
+void printIPv4Addr(u_int32_t addr);
+void treatIPv4(void* entete);
 
 #endif
