@@ -1,4 +1,4 @@
-OPT= -g#-Wall -Werror -Wextra
+OPT= -g -Wall -Wextra #-Werror
 
 
 analyzer: analyzer.o fct_ethernet.o fct_IPv4.o
