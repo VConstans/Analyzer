@@ -28,7 +28,7 @@ int main(int argc,char* argv[])
 	printf("%s",argv[1]);
 	pcap_t* interface = pcap_open_live(argv[1],1600,0,0,errbuf);
 
-	pcap_loop(interface,5,*got_packets,NULL);
+	pcap_loop(interface,-1,*got_packets,NULL);
 
 	return 0;
 }
