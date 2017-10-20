@@ -58,6 +58,19 @@ void treatIPv4(void* entete)
 		//TODO traitement options
 	}
 
-	
+
+	void* enteteNiv4 = entete+4*enteteIP->ihl;
+
+	switch(enteteIP->protocol)
+	{
+		case 0x06:
+			break;
+		case 0x11:
+			treatUDP(enteteNiv4);
+			break;
+		default:
+			printf("Pas de niveau 4");
+			break;
+	}
 
 }

@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <arpa/inet.h>
 
+#include "fct_UDP.h"
+
 
 void printIPv4Addr(u_int32_t addr);
 void treatIPv4(void* entete);
