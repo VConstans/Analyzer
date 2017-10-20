@@ -24,7 +24,7 @@ void treatEthernet(struct ether_header* entete)
 
 
 	printf("\t");
-	printf("%x\n",entete->ether_type);
+	printf("%x\n",ntohs(entete->ether_type));
 
 	void* enteteIP;
 
