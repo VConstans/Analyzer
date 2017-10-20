@@ -12,7 +12,7 @@ void got_packets(u_char* args,const struct pcap_pkthdr* header, const u_char* pa
 	treatEthernet(enteteEthernet);
 }
 
-int main()
+int main(int argc,char* argv[])
 {
 	char errbuf[PCAP_ERRBUF_SIZE];
 
@@ -24,7 +24,8 @@ int main()
 		perror("Erreur findalldevs");
 	}
 
-	pcap_t* interface = pcap_open_live("wlan1",1600,0,0,errbuf);
+	printf("%s",argv[1]);
+	pcap_t* interface = pcap_open_live(argv[1],1600,0,0,errbuf);
 
 	pcap_loop(interface,5,*got_packets,NULL);
 
