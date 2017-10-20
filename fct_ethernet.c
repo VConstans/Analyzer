@@ -26,12 +26,12 @@ void treatEthernet(struct ether_header* entete)
 	printf("\t");
 	printf("%x\n",ntohs(entete->ether_type));
 
-	void* enteteIP;
+	struct iphdr* enteteIP;
 
 	switch(entete->ether_type)
 	{
 		case 0x0008:
-			enteteIP = (struct ip*)(entete+sizeof(struct ether_header));
+			enteteIP = (struct iphdr*)((void*)entete+sizeof(struct ether_header));
 			treatIPv4(enteteIP);
 			break;
 		case 0xdd86:
