@@ -44,7 +44,7 @@ void treatIPv4(void* entete)
 
 	printf("Protocol %x\n",enteteIP->protocol);
 
-	printf("Checksum %x\n",enteteIP->check);
+	printf("Checksum %x\n",ntohs(enteteIP->check));
 
 	printf("Adresse source ");
 
