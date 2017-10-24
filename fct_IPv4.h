@@ -7,6 +7,7 @@
 #include <arpa/inet.h>
 
 #include "fct_UDP.h"
+#include "fct_tcp.h"
 
 
 void printIPv4Addr(u_int32_t addr);

@@ -64,6 +64,7 @@ void treatIPv4(void* entete)
 	switch(enteteIP->protocol)
 	{
 		case 0x06:
+			treatTCP(enteteNiv4);
 			break;
 		case 0x11:
 			treatUDP(enteteNiv4);
