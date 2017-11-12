@@ -1,18 +1,6 @@
 #include "fct_ethernet.h"
+#include "utile.h"
 
-void printEthAddr(u_int8_t addr[])
-{
-	int i=0;
-
-	for(i=0; i<ETH_ALEN ; i++)
-	{
-		printf("%x",addr[i]);
-		if(i<ETH_ALEN-1)
-		{
-			printf(":");
-		}
-	}
-}
 
 
 void treatEthernet(void* entete)
@@ -22,12 +10,11 @@ void treatEthernet(void* entete)
 
 	printf("Adresse dest\t");
 	printEthAddr(enteteEth->ether_dhost);
-	printf("\tAdresse src\t");
+	printf("Adresse src\t");
 	printEthAddr(enteteEth->ether_shost);
 
 
-	printf("\t");
-	printf("%x\n",ntohs(enteteEth->ether_type));
+	printf("%x\n",ntohs(enteteEth->ether_type));	//TODO printf protocole
 
 
 	//TODO CRC

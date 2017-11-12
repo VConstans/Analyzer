@@ -10,7 +10,6 @@
 #include "fct_tcp.h"
 
 
-void printIPv4Addr(u_int32_t addr);
 void treatIPv4(void* entete);
 
 #endif

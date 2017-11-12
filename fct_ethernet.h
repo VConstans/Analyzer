@@ -9,7 +9,6 @@
 #include "fct_IPv4.h"
 
 
-void printEthAddr(u_int8_t addr[]);
 void treatEthernet(void* entete);
 
 

@@ -1,27 +1,7 @@
 #include "fct_IPv4.h"
+#include "utile.h"
 
-#define IP_ALEN 4
 
-void printIPv4Addr(u_int32_t addr)
-{
-//	addr = ntohl(addr);
-	int i;
-	unsigned char octet;
-
-	for(i=0;i<IP_ALEN;i++)
-	{
-		octet=(unsigned char)addr;
-		printf("%d",octet);
-
-		if(i<IP_ALEN-1)
-		{
-			printf(".");
-		}
-
-		addr = addr>>8;
-	}	
-	printf("\n");
-}
 
 void treatIPv4(void* entete)
 {
