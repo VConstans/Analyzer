@@ -47,5 +47,45 @@ void treatBootp(void* entete)
 	if(ntohl(*((u_int32_t*)(enteteB->bp_vend))) == 0x63825363)	//XXX magic cookie dans define
 	{
 		printf("Magic cookie\n");
+		decodeDHCPOption(enteteB->bp_vend+4);
 	}
+	//else	TODO
+}
+
+
+void decodeDHCPOption(u_int8_t* ptrOption)
+{
+	u_int8_t type = ptrOption[0];
+	u_int8_t len = ptrOption[1];
+	u_int8_t* value = ptrOption + 2;
+
+	switch(type)
+	{
+		case TAG_DHCP_MESSAGE:
+			//XXX verifier si len ==1?
+			switch(value[0])
+			{
+				case DHCPDISCOVER:
+					break;
+				case DHCPOFFER:
+					break;
+				case DHCPREQUEST:
+					break;
+				case DHCPDECLINE:
+					break;
+				case DHCPACK:
+					break;
+				case DHCPNAK:
+					break;
+				case DHCPRELEASE:
+					break;
+				case DHCPINFORM:
+					break;
+			}
+			break;
+		case TAG_END:
+			return;
+	}
+
+	decodeDHCPOption(ptrOption+2+len);
 }
