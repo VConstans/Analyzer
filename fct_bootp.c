@@ -66,23 +66,87 @@ void decodeDHCPOption(u_int8_t* ptrOption)
 			switch(value[0])
 			{
 				case DHCPDISCOVER:
+					printf("DHCP DISCOVER\n");
 					break;
 				case DHCPOFFER:
+					printf("DHCP OFFER\n");
 					break;
 				case DHCPREQUEST:
+					printf("DHCP REQUEST\n");
 					break;
 				case DHCPDECLINE:
+					printf("DHCP DECLINE\n");
 					break;
 				case DHCPACK:
+					printf("DHCP ACK\n");
 					break;
 				case DHCPNAK:
+					printf("DHCP NACK\n");
 					break;
 				case DHCPRELEASE:
+					printf("DHCP RELEASE\n");
 					break;
 				case DHCPINFORM:
-					break;
+					printf("DHCP INFORM\n");
+					
+break;
 			}
 			break;
+
+		case TAG_SUBNET_MASK:
+			//XXX verifier que le taille des masques est cohérente par rapport au taille donnée dans d'autre champs
+			printEthAddr(value);
+			break;
+
+		case TAG_OFFSET:
+			//TODO 
+			break;
+
+		case TAG_GATEWAY:
+			//XXX tester quelle type d'adresse IP s'est
+			//TODO verifier taille
+			printIPv4Addr_u_int8(value);
+			break;
+
+		case TAG_DOMAIN_SERVER:
+			int nb_dns = *len/4;
+			//XXX tester si le nb de dns est un nombre entier
+			int i;
+			u_int8_t* curseur = value;
+
+			for(i=0;i<nb_dns;i++)
+			{
+				//XXX tester quelle type d'adresse IP s'est
+				//TODO verifier taille
+				printIPv4Addr_u_int8(curseur);
+
+				curseur = curseur + 4;
+			}
+			break;
+
+		case TAG_HOSTNAME:
+			printHexToAscii_len(len,value);
+			break;
+
+		case TAG_DOMAINNAME:
+			printHexToAscii_len(len,value);
+			break;
+
+		case TAG_BROAD_ADDR:
+			printIPv4Addr_u_int8(value);
+			break;
+
+		//TODO case netbios 44 et 47
+
+
+		case TAG_REQUESTED_IP:
+			printIPv4Addr_u_int8(value);
+			break;
+
+		case TAG_IP_LEASE:
+			//TODO
+			break;
+
 		case TAG_END:
 			return;
 	}
