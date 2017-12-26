@@ -10,7 +10,7 @@
 void printIPv4Addr(u_int32_t);
 void printEthAddr(u_int8_t*);
 void printHexToAscii_len(int, u_int8_t*);
-void printIPv4Addr_u_in8(u_int8_t*);
+void printIPv4Addr_u_int8(u_int8_t*);
 
 
 #endif

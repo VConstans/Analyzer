@@ -24,7 +24,7 @@ void printIPv4Addr(u_int32_t addr)
 	printf("\n");
 }
 
-void printIPv4Addr_u_in8(u_int8_t* addr)
+void printIPv4Addr_u_int8(u_int8_t* addr)
 {
 //	addr = ntohl(addr);
 	int i;
