@@ -147,6 +147,34 @@ break;
 			//TODO
 			break;
 
+		case TAG_SERVER_ID:
+			printf("Server identifier: ");
+			//TODO verifier taille adresse
+			printIPv4Addr_u_int8(value);
+			break;
+
+		case TAG_PARM_REQUEST:
+			//TODO
+			break;
+
+		case TAG_CLIENT_ID:
+			if(value[0] == 1)	
+			{
+				if(len == 7)
+				{
+					printEthAddr(value[1]);
+				}
+				else
+				{
+					printf("Erreur, adresse malformé\n");
+				}
+			}
+			else	
+			{
+				printf("Erreur, adresse de niveau 2 non ethernet\n");
+			}
+			break;
+
 		case TAG_END:
 			return;
 	}
