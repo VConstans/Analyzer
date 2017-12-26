@@ -1,10 +1,4 @@
-#include <stdlib.h>
-#include <net/ethernet.h>
-#include <netinet/ip.h>
-#include <stdio.h>
-#include <pcap.h>
-#include "fct_ethernet.h"
-
+#include "analyzer.h"
 
 void got_packets(u_char* args,const struct pcap_pkthdr* header, const u_char* packet)
 {
