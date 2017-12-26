@@ -59,6 +59,10 @@ void decodeDHCPOption(u_int8_t* ptrOption)
 	u_int8_t len = ptrOption[1];
 	u_int8_t* value = ptrOption + 2;
 
+
+	int nb_dns;
+	int i;
+
 	switch(type)
 	{
 		case TAG_DHCP_MESSAGE:
@@ -98,7 +102,7 @@ break;
 			printEthAddr(value);
 			break;
 
-		case TAG_OFFSET:
+		case TAG_TIME_OFFSET:
 			//TODO 
 			break;
 
@@ -109,9 +113,8 @@ break;
 			break;
 
 		case TAG_DOMAIN_SERVER:
-			int nb_dns = *len/4;
+			nb_dns = len/4;
 			//XXX tester si le nb de dns est un nombre entier
-			int i;
 			u_int8_t* curseur = value;
 
 			for(i=0;i<nb_dns;i++)
@@ -162,7 +165,7 @@ break;
 			{
 				if(len == 7)
 				{
-					printEthAddr(value[1]);
+					printEthAddr(&value[1]);
 				}
 				else
 				{
