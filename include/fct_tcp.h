@@ -5,9 +5,10 @@
 #include <stdlib.h>
 #include <netinet/tcp.h>
 #include <arpa/inet.h>
+#include "fct_http.h"
 
 
-void treatTCP(void* entete);
+void treatTCP(void*,int);
 
 
 #endif

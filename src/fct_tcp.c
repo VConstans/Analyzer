@@ -1,6 +1,6 @@
 #include "fct_tcp.h"
 
-void treatTCP(void* entete)
+void treatTCP(void* entete,int len)
 {
 	struct tcphdr* enteteTCP = (struct tcphdr*) entete;
 
@@ -51,4 +51,14 @@ void treatTCP(void* entete)
 	{
 		//TODO traiter options
 	}
+
+
+	void* enteteNiv7 = entete +4*hdrLen;
+
+	if(enteteTCP->source == 80 || enteteTCP->dest == 80)
+	{
+		treateHTTP(enteteNiv7,len-4*hdrLen);
+	}
+
+	//TODO treat https?
 }
