@@ -57,6 +57,8 @@ void treatTCP(void* entete,int len)
 		//TODO traiter options
 	}
 
+	//TODO traiter bourrage
+
 
 	void* enteteNiv7 = entete +4*hdrLen;
 
@@ -73,6 +75,11 @@ void treatTCP(void* entete,int len)
 	if(source == 25 || destination == 25)
 	{
 		treatSMTP(enteteNiv7,len);
+	}
+
+	if(source == 21 ||/* source == 20 ||*/ destination == 21 /*|| destination == 20*/)
+	{
+		treatFTP(enteteNiv7,len);
 	}
 
 }

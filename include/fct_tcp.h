@@ -7,6 +7,7 @@
 #include <arpa/inet.h>
 #include "fct_http.h"
 #include "fct_smtp.h"
+#include "fct_ftp.h"
 
 
 void treatTCP(void*,int);
