@@ -4,6 +4,7 @@
 #include "netinet/bootp.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "utile.h"
 
 void treatBootp(void*);
 void decodeDHCPOption(u_int8_t*);
