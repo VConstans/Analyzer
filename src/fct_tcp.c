@@ -4,10 +4,15 @@ void treatTCP(void* entete,int len)
 {
 	struct tcphdr* enteteTCP = (struct tcphdr*) entete;
 
-	printf("Port Source %d\n",ntohs(enteteTCP->source));
-	printf("Port destination %d\n",ntohs(enteteTCP->dest));
+	u_int16_t source = ntohs(enteteTCP->source);
+	u_int16_t destination = ntohs(enteteTCP->dest);
+
+	printf("Port Source %d\n",source);
+	printf("Port destination %d\n",destination);
 	printf("Numéro de séquence %u\n",enteteTCP->seq);	//TODO mauvais numéro
 	printf("Numéro d'ack %u\n",enteteTCP->ack_seq);		//TODO mauvais numéro
+
+
 
 	int hdrLen = enteteTCP->doff;
 	printf("Data offset %d\n",hdrLen);
@@ -55,9 +60,9 @@ void treatTCP(void* entete,int len)
 
 	void* enteteNiv7 = entete +4*hdrLen;
 
-	if(enteteTCP->source == 80 || enteteTCP->dest == 80)
+	if(source == 80 || destination == 80)
 	{
-		treateHTTP(enteteNiv7,len-4*hdrLen);
+		treatHTTP(enteteNiv7,len-4*hdrLen);
 	}
 
 	//TODO treat https?

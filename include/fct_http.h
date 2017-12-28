@@ -1,6 +1,8 @@
 #ifndef __FCT_HTTP_H__
 #define __FCT_HTTP_H__
 
-void treateHTTP(void*,int);
+#include "utile.h"
+
+void treatHTTP(void*,int);
 
 #endif
