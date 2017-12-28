@@ -60,10 +60,19 @@ void treatTCP(void* entete,int len)
 
 	void* enteteNiv7 = entete +4*hdrLen;
 
+	len -= 4*hdrLen;
+
 	if(source == 80 || destination == 80)
 	{
-		treatHTTP(enteteNiv7,len-4*hdrLen);
+		treatHTTP(enteteNiv7,len);
 	}
 
+
 	//TODO treat https?
+
+	if(source == 25 || destination == 25)
+	{
+		treatSMTP(enteteNiv7,len);
+	}
+
 }
