@@ -14,7 +14,8 @@ void treatIPv4(void* entete)
 
 	printf("TOS %x\n", enteteIP->tos);
 
-	printf("Total length %d\n",enteteIP->tot_len);
+	int len = ntohs(enteteIP->tot_len);
+	printf("Total length %d\n",len);
 
 	printf("Identification %x\n",enteteIP->id);
 
@@ -44,7 +45,7 @@ void treatIPv4(void* entete)
 	switch(enteteIP->protocol)
 	{
 		case 0x06:
-			treatTCP(enteteNiv4,enteteIP->tot_len-4*enteteIP->ihl);
+			treatTCP(enteteNiv4,len-4*enteteIP->ihl);
 			break;
 		case 0x11:
 			treatUDP(enteteNiv4);
