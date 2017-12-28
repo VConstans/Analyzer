@@ -5,7 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void treatBootp(void* entete);
-void decodeDHCPOption(u_int8_t* ptrOption);
+void treatBootp(void*);
+void decodeDHCPOption(u_int8_t*);
+void decodeParameterRequestList(u_int8_t);
 
 #endif

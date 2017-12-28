@@ -60,7 +60,7 @@ void decodeDHCPOption(u_int8_t* ptrOption)
 	u_int8_t* value = ptrOption + 2;
 
 
-	int nb_dns;
+	int nb_param;
 	int i;
 
 	switch(type)
@@ -99,6 +99,7 @@ break;
 
 		case TAG_SUBNET_MASK:
 			//XXX verifier que le taille des masques est cohérente par rapport au taille donnée dans d'autre champs
+			printf("Subnet mask: ");
 			printEthAddr(value);
 			break;
 
@@ -109,15 +110,17 @@ break;
 		case TAG_GATEWAY:
 			//XXX tester quelle type d'adresse IP s'est
 			//TODO verifier taille
+			printf("Gateway: ");
 			printIPv4Addr_u_int8(value);
 			break;
 
 		case TAG_DOMAIN_SERVER:
-			nb_dns = len/4;
+			nb_param = len/4;
 			//XXX tester si le nb de dns est un nombre entier
 			u_int8_t* curseur = value;
 
-			for(i=0;i<nb_dns;i++)
+			printf("Domain servers: ");
+			for(i=0;i<nb_param;i++)
 			{
 				//XXX tester quelle type d'adresse IP s'est
 				//TODO verifier taille
@@ -128,14 +131,19 @@ break;
 			break;
 
 		case TAG_HOSTNAME:
+			printf("Hostname: ");
 			printHexToAscii_len(len,value);
+			printf("\n");
 			break;
 
 		case TAG_DOMAINNAME:
+			printf("Domain name: ");
 			printHexToAscii_len(len,value);
+			printf("\n");
 			break;
 
 		case TAG_BROAD_ADDR:
+			printf("Broadcast adress: ");
 			printIPv4Addr_u_int8(value);
 			break;
 
@@ -143,11 +151,14 @@ break;
 
 
 		case TAG_REQUESTED_IP:
+			printf("Requested IP adress: ");
 			printIPv4Addr_u_int8(value);
 			break;
 
 		case TAG_IP_LEASE:
+			printf("Lease time: ");
 			//TODO
+			printf("\n");
 			break;
 
 		case TAG_SERVER_ID:
@@ -157,7 +168,14 @@ break;
 			break;
 
 		case TAG_PARM_REQUEST:
-			//TODO
+			nb_param = len;
+
+			printf("Parameter request: ");
+			for(i=0;i<nb_param;i++)
+			{
+				decodeParameterRequestList(value[i]);
+			}
+			printf("\n");
 			break;
 
 		case TAG_CLIENT_ID:
@@ -165,6 +183,7 @@ break;
 			{
 				if(len == 7)
 				{
+					printf("Client identifier: ");
 					printEthAddr(&value[1]);
 				}
 				else
@@ -183,4 +202,65 @@ break;
 	}
 
 	decodeDHCPOption(ptrOption+2+len);
+}
+
+
+void decodeParameterRequestList(u_int8_t param)
+{
+	switch(param)
+	{
+		case TAG_SUBNET_MASK:
+			printf("Subnet mask");
+			break;
+
+		case TAG_TIME_OFFSET:
+			printf("Time offset");
+			break;
+
+		case TAG_GATEWAY:
+			printf("Gateway");
+			break;
+
+		case TAG_DOMAIN_SERVER:
+			printf("Domain server");
+			break;
+
+		case TAG_HOSTNAME:
+			printf("Hostname");
+			break;
+
+		case TAG_DOMAINNAME:
+			printf("Domain name");
+			break;
+
+		case TAG_BROAD_ADDR:
+			printf("Broadcast adress");
+			break;
+
+		case TAG_NETBIOS_NS:
+			printf("Netbios over TCP/IP Name Server");
+			break;
+
+		case TAG_NETBIOS_SCOPE:
+			printf("Netbios over TCP/IP Scope");
+			break;
+
+		case TAG_REQUESTED_IP:
+			printf("Requested IP adress");
+			break;
+
+		case TAG_IP_LEASE:
+			printf("IP lease");
+			break;
+
+		case TAG_SERVER_ID:
+			printf("Server identifier");
+			break;
+
+		case TAG_CLIENT_ID:
+			printf("Client identifier");
+			break;
+	}
+
+	printf(", ");
 }
