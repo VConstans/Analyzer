@@ -9,6 +9,7 @@ void treatIPv4(void* entete)
 	struct iphdr* enteteIP = (struct iphdr*)entete;
 
 	printf("Version %d\n",enteteIP->version);
+	//TODO verifier qu'il s'agit bien de la version 4 de IP
 
 	printf("IHL %d\n",enteteIP->ihl);
 
