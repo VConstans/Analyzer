@@ -13,22 +13,28 @@ void treatEthernet(void* entete)
 	printf("Adresse src\t");
 	printEthAddr(enteteEth->ether_shost);
 
-
-	printf("%x\n",ntohs(enteteEth->ether_type));	//TODO printf protocole
+	u_int16_t ether_type = ntohs(enteteEth->ether_type);
+	printf("%x ",ether_type);	//TODO printf protocole
 
 
 	//TODO CRC
 
 	void* enteteNiv3;
+	enteteNiv3 = entete+sizeof(struct ether_header);
 
-	switch(enteteEth->ether_type)
+	switch(ether_type)
 	{
-		case 0x0008:
-			enteteNiv3 = entete+sizeof(struct ether_header);
+		case 0x0800:
+			printf("IPv4\n");
 			treatIPv4(enteteNiv3);
 			break;
-		case 0xdd86:
-			//treatIPv6(enteteIP);
+		case 0x86dd:
+			printf("IPv6\n");
+			treatIPv6(enteteNiv3);
+			break;
+		case 0x0806:
+			printf("ARP\n");
+		//	treatARP(enteteNiv3);
 			break;
 		default:
 			printf("Pas de couche 3");
