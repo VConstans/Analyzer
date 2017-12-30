@@ -46,6 +46,22 @@ void printIPv4Addr_u_int8(u_int8_t* addr)
 }
 
 
+void printIPv6Addr(struct in6_addr* addr)
+{
+	int i;
+	for(i=0;i<16;i+=2)
+	{
+		printf("%x%x",addr->__in6_u.__u6_addr8[i],addr->__in6_u.__u6_addr8[i+1]);
+
+		if(i+1 != 15)
+		{
+			printf(":");
+		}
+	}
+	printf("\n");
+}
+
+
 void printEthAddr(u_int8_t addr[])
 {
 	int i=0;
