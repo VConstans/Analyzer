@@ -3,6 +3,8 @@
 
 #include <netinet/ip6.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include "utile.h"
 
 void treatIPv6(void*);
 
