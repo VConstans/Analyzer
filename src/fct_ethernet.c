@@ -34,7 +34,7 @@ void treatEthernet(void* entete)
 			break;
 		case 0x0806:
 			printf("ARP\n");
-		//	treatARP(enteteNiv3);
+			treatARP(enteteNiv3);
 			break;
 		default:
 			printf("Pas de couche 3");
