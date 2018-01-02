@@ -84,5 +84,10 @@ void treatTCP(void* entete,int len)
 		{
 			treatFTP(enteteNiv7,len);
 		}
+
+		if(source == 23 || destination == 23)
+		{
+			treatTelnet(enteteNiv7,len);
+		}
 	}
 }
