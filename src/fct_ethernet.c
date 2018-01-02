@@ -39,4 +39,7 @@ void treatEthernet(void* entete)
 		default:
 			printf("Pas de couche 3");
 	}
+
+
+	printf("\n\n");
 }
