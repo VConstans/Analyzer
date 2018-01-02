@@ -8,6 +8,7 @@
 #include "fct_http.h"
 #include "fct_smtp.h"
 #include "fct_ftp.h"
+#include "fct_telnet.h"
 
 
 void treatTCP(void*,int);
