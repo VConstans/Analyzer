@@ -64,22 +64,25 @@ void treatTCP(void* entete,int len)
 
 	len -= 4*hdrLen;
 
-	if(source == 80 || destination == 80)
-	{
-		treatHTTP(enteteNiv7,len);
+	if(len != 0)
+		{
+
+		if(source == 80 || destination == 80)
+		{
+			treatHTTP(enteteNiv7,len);
+		}
+
+
+		//TODO treat https?
+
+		if(source == 25 || destination == 25)
+		{
+			treatSMTP(enteteNiv7,len);
+		}
+
+		if(source == 21 ||/* source == 20 ||*/ destination == 21 /*|| destination == 20*/)
+		{
+			treatFTP(enteteNiv7,len);
+		}
 	}
-
-
-	//TODO treat https?
-
-	if(source == 25 || destination == 25)
-	{
-		treatSMTP(enteteNiv7,len);
-	}
-
-	if(source == 21 ||/* source == 20 ||*/ destination == 21 /*|| destination == 20*/)
-	{
-		treatFTP(enteteNiv7,len);
-	}
-
 }
