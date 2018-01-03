@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <netinet/udp.h>
 #include "fct_bootp.h"
+#include "fct_dns.h"
 
 void treatUDP(void* entete);
 

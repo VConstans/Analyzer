@@ -26,7 +26,7 @@ void treatUDP(void* entete)
 	//DNS
 	if(source == 53 || destination == 53)
 	{
-		//treatDNS(enteteNiv7);
+		treatDNS(enteteNiv7);
 	}
 
 	//XXX NAT
