@@ -45,7 +45,7 @@ void treatHTTP(void* entete, int len)
 		printf("%c",httpPayload[i]);
 	}
 
-	if(affiche)
+	if(affiche)	//TODO  tenir compte de content len
 	{
 		for(;i<len;i++)
 		{
