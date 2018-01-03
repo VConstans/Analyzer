@@ -52,8 +52,6 @@ void decodeType(u_int16_t type)
 
 u_int8_t* printLabel(u_int8_t* name, u_int8_t* entete)
 {
-	int premier = 1;
-
 	while(*name != 0x0)
 	{
 		if(((*name & 0xc0) >> 6) == 0x3)
@@ -65,12 +63,6 @@ u_int8_t* printLabel(u_int8_t* name, u_int8_t* entete)
 		}
 		else
 		{
-			if(!premier)
-			{
-				printf(".");
-			}
-
-			premier = 0;
 			u_int8_t length = *name;
 			name++;
 			u_int8_t i;
@@ -78,6 +70,10 @@ u_int8_t* printLabel(u_int8_t* name, u_int8_t* entete)
 			{
 				printf("%c",*name);
 				name++;
+			}
+			if(*name != 0x0)
+			{
+				printf(".");
 			}
 		}
 	}
@@ -136,11 +132,11 @@ u_int8_t* decodeAnswer(u_int8_t* curseur,u_int8_t* entete)
 				fin = printLabel(fin,entete);
 
 				u_int32_t* SOA_data = (u_int32_t*)fin;
-				printf("Serial Number: %d\n",SOA_data[0]);
-				printf("Refresh Interval: %d\n",SOA_data[1]);
-				printf("Retry Interval: %d\n",SOA_data[2]);
-				printf("Expiration Limit: %d\n",SOA_data[3]);
-				printf("Minimum TTL: %d\n",SOA_data[4]);
+				printf("Serial Number: %d\n",ntohl(SOA_data[0]));
+				printf("Refresh Interval: %d\n",ntohl(SOA_data[1]));
+				printf("Retry Interval: %d\n",ntohl(SOA_data[2]));
+				printf("Expiration Limit: %d\n",ntohl(SOA_data[3]));
+				printf("Minimum TTL: %d\n",ntohl(SOA_data[4]));
 				
 				break;
 			case 12:
