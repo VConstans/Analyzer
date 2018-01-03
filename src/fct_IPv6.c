@@ -31,4 +31,36 @@ void treatIPv6(void* entete)
 	printIPv6Addr(enteteIP->ip6_src.__in6_u.__u6_addr8);
 	printIPv6Addr(enteteIP->ip6_dst.__in6_u.__u6_addr8);
 
+	//TODO option
+/*
+	u_int8_t next_header = enteteIP->ip6_ctlun.ip6_un1.ip6_un1_nxt;
+	u_int16_t length = enteteIP->ip6_ctlun.ip6_un1.ip6_un1_plen;
+
+	while(next_header != 0x6 && next_header != 0x11)
+	{
+		switch(next_header)
+		{
+			case 0:
+				printf("Option Hop by Hop\n");
+				
+				break;
+		}
+	}
+
+*/
+
+	void* enteteNiv4 = entete + sizeof(struct ip6_hdr);
+
+	switch(enteteIP->ip6_ctlun.ip6_un1.ip6_un1_nxt)
+	{
+		case 0x06:
+			treatTCP(enteteNiv4,enteteIP->ip6_ctlun.ip6_un1.ip6_un1_plen);
+			break;
+		case 0x11:
+			treatUDP(enteteNiv4);
+			break;
+		default:
+			printf("Pas de niveau 4");
+			break;
+	}
 }

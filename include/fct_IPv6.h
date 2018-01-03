@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "utile.h"
+#include "fct_UDP.h"
+#include "fct_tcp.h"
 
 void treatIPv6(void*);
 
