@@ -24,6 +24,7 @@
 #define LM 0x22
 #define EV 0x24
 #define NEV 0x27
+#define XDL 0x23
 
 #define SEND 0x1
 #define IS 0x0

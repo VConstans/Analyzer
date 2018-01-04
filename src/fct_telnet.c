@@ -59,7 +59,7 @@ void treatTelnet(void* entete,int len)
 								printf("Width: %d ",ntohs(*((u_int16_t*)(message+i))));
 								break;
 							case TS:
-								printf("Termnial Speed: ");
+								printf("Terminal Speed: ");
 								i++;
 								switch(message[i])
 								{
@@ -89,6 +89,33 @@ void treatTelnet(void* entete,int len)
 										printf("Erreur option Terminal Speed\n");
 										break;
 								}
+								break;
+
+							case XDL:
+								printf("X Display Location: ");
+								i++;
+								switch(message[i])
+								{
+									case SEND:
+										printf("SEND\n");
+										break;
+									case IS:
+										i++;
+										printf("IS ");
+										while(message[i] != IAC && message[i+1] != SE)
+										{
+											printf("%c",message[i]);
+											i++;
+										}
+										printf("\n");
+										i--;
+										break;
+									default:
+										printf("Erreur option Terminal Speed\n");
+										break;
+								}
+
+								break;
 							default:
 								printf("Unreconized Sub Option\n");
 								break;
@@ -143,6 +170,9 @@ void treatTelnet(void* entete,int len)
 						break;
 					case NEV:
 						printf("New Environment Variables\n");
+						break;
+					case XDL:
+						printf("X Display Location\n");
 						break;
 					default:
 						printf("Option non reconu\n");
