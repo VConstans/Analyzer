@@ -17,18 +17,21 @@ void treatUDP(void* entete)
 
 	void* enteteNiv7 = entete + sizeof(struct udphdr);
 
-	//BOOTP
-	if(source == 67 || destination == 67 || source == 68 || destination == 68)
+
+	if(lg > 8)
 	{
-		treatBootp(enteteNiv7);
+		//BOOTP
+		if(source == 67 || destination == 67 || source == 68 || destination == 68)
+		{
+			treatBootp(enteteNiv7);
+		}
+
+		//DNS
+		if(source == 53 || destination == 53)
+		{
+			treatDNS(enteteNiv7);
+		}
+
+		//XXX NAT
 	}
-
-	//DNS
-	if(source == 53 || destination == 53)
-	{
-		treatDNS(enteteNiv7);
-	}
-
-	//XXX NAT
-
 }
