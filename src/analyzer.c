@@ -1,6 +1,7 @@
 #include "analyzer.h"
 
 int levelPrinting = 0;
+int verbose = 1;
 
 void got_packets(u_char* args,const struct pcap_pkthdr* header, const u_char* packet)
 {
@@ -11,20 +12,51 @@ void got_packets(u_char* args,const struct pcap_pkthdr* header, const u_char* pa
 
 int main(int argc,char* argv[])
 {
-	char errbuf[PCAP_ERRBUF_SIZE];
+	char arg;
+	char* nom_src = NULL;
+	int src;
 
-	char* listDev = NULL;
-
-	listDev=pcap_lookupdev(errbuf);
-	if(listDev == NULL)
+	while((arg = getopt(argc,argv,"i:o:v:")) != -1)
 	{
-		perror("Erreur findalldevs");
+		switch(arg)
+		{
+			case 'i':
+				nom_src = optarg;
+				src = INTERFACE;
+				break;
+			case 'o':
+				nom_src = optarg;
+				src = FICHIER;
+				break;
+			case 'v':
+				verbose = atoi(optarg);
+				break;
+		}
 	}
 
-	printf("%s",argv[1]);
-	pcap_t* interface = pcap_open_live(argv[1],1600,0,0,errbuf);
+
+	char errbuf[PCAP_ERRBUF_SIZE];
+
+	//TODO regarder si l'interface existe
+
+	pcap_t* interface;
+	switch(src)
+	{
+		case INTERFACE:
+			interface = pcap_open_live(nom_src,1600,0,0,errbuf);
+			break;
+		case FICHIER:
+			interface = pcap_open_offline(nom_src,errbuf);
+			break;
+		default:
+			printf("Pas de source selectionne\n");
+			exit(-1);
+			break;
+	}
 
 	pcap_loop(interface,-1,*got_packets,NULL);
+
+	//TODO carpturer SIGINT pour close
 
 	return 0;
 }
