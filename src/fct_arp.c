@@ -2,6 +2,9 @@
 
 void treatARP(void* entete)
 {
+	extern int levelPrinting;
+	levelPrinting = 1;
+
 	struct arphdr* enteteARP = (struct arphdr*)entete;
 
 	uint16_t hrd = ntohs(enteteARP->ar_hrd);

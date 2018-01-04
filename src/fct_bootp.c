@@ -3,6 +3,9 @@
 
 void treatBootp(void* entete)
 {
+	extern int levelPrinting;
+	levelPrinting = 3;
+
 	struct bootp* enteteB = (struct bootp*)entete;
 
 	printf("BOOTP\n");

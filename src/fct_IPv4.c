@@ -5,6 +5,8 @@
 
 void treatIPv4(void* entete)
 {
+	extern int levelPrinting;
+	levelPrinting = 1;
 
 	struct iphdr* enteteIP = (struct iphdr*)entete;
 

@@ -2,6 +2,9 @@
 
 void treatTelnet(void* entete,int len)
 {
+	extern int levelPrinting;
+	levelPrinting = 3;
+
 	printf("Telnet\n");
 
 	u_int8_t* message = (u_int8_t*)entete;

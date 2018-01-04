@@ -2,6 +2,9 @@
 
 void treatIPv6(void* entete)
 {
+	extern int levelPrinting;
+	levelPrinting = 1;
+
 	printf("IPV6\n");
 
 	struct ip6_hdr* enteteIP = (struct ip6_hdr*)entete;

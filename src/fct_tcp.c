@@ -2,6 +2,9 @@
 
 void treatTCP(void* entete,int len)
 {
+	extern int levelPrinting;
+	levelPrinting = 2;
+
 	struct tcphdr* enteteTCP = (struct tcphdr*) entete;
 
 	u_int16_t source = ntohs(enteteTCP->source);

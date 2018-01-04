@@ -5,6 +5,8 @@
 
 void treatEthernet(void* entete)
 {
+	extern int levelPrinting;
+	levelPrinting = 0;
 
 	struct ether_header* enteteEth = (struct ether_header*)entete;
 

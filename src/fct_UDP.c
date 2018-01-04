@@ -2,6 +2,9 @@
 
 void treatUDP(void* entete)
 {
+	extern int levelPrinting;
+	levelPrinting = 2;
+
 	struct udphdr* enteteUDP = (struct udphdr*)entete;
 
 	u_int16_t source = ntohs(enteteUDP->source);

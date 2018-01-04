@@ -2,6 +2,9 @@
 
 void treatHTTP(void* entete, int len)
 {
+	extern int levelPrinting;
+	levelPrinting = 3;
+
 	printf("=====================>HTTP\n");
 
 	u_int8_t* httpPayload = (u_int8_t*)entete;

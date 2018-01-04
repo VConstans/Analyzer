@@ -78,13 +78,34 @@ void printEthAddr(u_int8_t addr[])
 }
 
 
+void printLevelLayer()
+{
+	extern int levelPrinting;
+	int i;
+	for(i=0;i<levelPrinting;i++)
+	{
+		printf("\t");
+	}
+}
+
+void printHexToAscii(u_int8_t car)
+{
+	if(car != 0x0a)
+	{
+		printf("%c",car);
+	}
+}
+
+
 void printHexToAscii_len(int len, u_int8_t* string)
 {
+	printLevelLayer();
+
 	int i = 0;
 	
 	for(i=0;i<len;i++)
 	{
-		printf("%c",string[i]);
+		printHexToAscii(string[i]);
 	}
 
 	printf("\n");

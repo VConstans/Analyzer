@@ -1,5 +1,7 @@
 #include "analyzer.h"
 
+int levelPrinting = 0;
+
 void got_packets(u_char* args,const struct pcap_pkthdr* header, const u_char* packet)
 {
 	struct ether_header* enteteEthernet = (struct ether_header*)packet; 

@@ -171,6 +171,9 @@ u_int8_t* decodeAnswer(u_int8_t* curseur,u_int8_t* entete)
 
 void treatDNS(void* entete)
 {
+	extern int levelPrinting;
+	levelPrinting = 3;
+
 	struct dns_header* enteteDNS = (struct dns_header*)entete;
 
 	printf("Identifier: %x\n",ntohs(enteteDNS->tid));
