@@ -21,10 +21,12 @@ void treatIPv6(void* entete)
 	}
 
         printf("Version: %d\n",version);
-        printf("Classe: %d\n",classe);
-        printf("Label: %d\n",label);
+        printf("Classe: %x\n",classe);
+        printf("Label: %x\n",label);
 
-	printf("Longueur: %d\n",enteteIP->ip6_ctlun.ip6_un1.ip6_un1_plen);
+	u_int16_t len = ntohs(enteteIP->ip6_ctlun.ip6_un1.ip6_un1_plen);
+
+	printf("Longueur: %d\n",len);
 	printf("Next header: %d\n",enteteIP->ip6_ctlun.ip6_un1.ip6_un1_nxt);
 	printf("Hop limit: %d\n",enteteIP->ip6_ctlun.ip6_un1.ip6_un1_hlim);
 
@@ -54,7 +56,7 @@ void treatIPv6(void* entete)
 	switch(enteteIP->ip6_ctlun.ip6_un1.ip6_un1_nxt)
 	{
 		case 0x06:
-			treatTCP(enteteNiv4,enteteIP->ip6_ctlun.ip6_un1.ip6_un1_plen);
+			treatTCP(enteteNiv4,len);
 			break;
 		case 0x11:
 			treatUDP(enteteNiv4);
