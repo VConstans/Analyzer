@@ -149,7 +149,7 @@ u_int8_t* decodeAnswer(u_int8_t* curseur,u_int8_t* entete)
 				printLabel(&(answer->adata) + 2,entete);
 				break;
 			case 28:
-				if(answer->alen == 16)
+				if(len == 16)
 				{
 					printf("Adress: ");
 					printIPv6Addr(&answer->adata);
