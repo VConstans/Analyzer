@@ -49,7 +49,29 @@ void treatTelnet(void* entete,int len)
 						switch(message[i])
 						{
 							case TT:
-								//TODO
+								printf("Terminal Type: ");
+								i++;
+								switch(message[i])
+								{
+									case SEND:
+										printf("SEND\n");
+										break;
+									case IS:
+										i++;
+										printf("IS ");
+										while(message[i] != IAC && message[i+1] != SE)
+										{
+											printf("%c",message[i]);
+											i++;
+										}
+										printf("\n");
+										i--;
+										break;
+									default:
+										printf("Erreur option Terminal Speed\n");
+										break;
+								}
+
 								break;
 							case WS:
 								i++;
