@@ -44,8 +44,8 @@ void treatTelnet(void* entete,int len)
 				case SB:
 					printf("Suboption ");
 					i++;
-					while(message[i] != SE)
-					{
+				//	while(message[i] != SE)
+				//	{
 						switch(message[i])
 						{
 							case TT:
@@ -57,11 +57,44 @@ void treatTelnet(void* entete,int len)
 								printf("Width: %d ",ntohs(*((u_int16_t*)(message+i))));
 								i+=2;
 								printf("Width: %d ",ntohs(*((u_int16_t*)(message+i))));
-								//TODO
+								break;
+							case TS:
+								printf("Termnial Speed: ");
+								i++;
+								switch(message[i])
+								{
+									case SEND:
+										printf("SEND\n");
+										break;
+									case IS:
+										i++;
+										printf("Transmit speed: ");
+										while(message[i] != ',')
+										{
+											printf("%c",message[i]);
+											i++;
+										}
+										printf("\n");
+										i++;
+										printf("Receive speed: ");
+										while(message[i] != IAC && message[i+1] != SE)
+										{
+											printf("%c",message[i]);
+											i++;
+										}
+										printf("\n");
+										i--;
+										break;
+									default:
+										printf("Erreur option Terminal Speed\n");
+										break;
+								}
+							default:
+								printf("Unreconized Sub Option\n");
+								break;
 						}
 						i++;
-					}
-					printf("Suboption End\n");
+				//	}
 					break;
 				case WILL:
 					printf("WILL ");
@@ -75,7 +108,9 @@ void treatTelnet(void* entete,int len)
 				case DONT:
 					printf("DON'T ");
 					break;
-				
+				case SE:
+					printf("Suboption End\n");
+					break;
 				default:
 					printf("Option non reconnu\n");
 			}

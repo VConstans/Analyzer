@@ -25,6 +25,9 @@
 #define EV 0x24
 #define NEV 0x27
 
+#define SEND 0x1
+#define IS 0x0
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <netinet/in.h>
