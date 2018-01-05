@@ -67,7 +67,7 @@ void treatTCP(void* entete,int len)
 
 	len -= 4*hdrLen;
 
-	if(len > 0 && enteteTCP->psh)
+	if(len > 0 /*&& enteteTCP->psh*/)
 		{
 
 		if(source == 80 || destination == 80)
