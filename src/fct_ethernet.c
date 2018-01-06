@@ -3,49 +3,71 @@
 
 void treatEthernet(void* entete)
 {
-	extern int levelPrinting;
 	extern int verbose;
-	levelPrinting = 0;
 
-	printLevelLayer();
-	printf("ETHERNET:\n");
+	if(verbose >= 2)
+	{
+		printf("ETHERNET: ");
+	}
 
 	struct ether_header* enteteEth = (struct ether_header*)entete;
-
-	printLevelLayer();
-	printf("Adresse dest\t");
-	printLevelLayer();
-	printEthAddr(enteteEth->ether_dhost);
-	printLevelLayer();
-	printf("Adresse src\t");
-	printLevelLayer();
-	printEthAddr(enteteEth->ether_shost);
-
 	u_int16_t ether_type = ntohs(enteteEth->ether_type);
-	printLevelLayer();
-	printf("EtherType: ");
-	printLevelLayer();
-	printf("%x ",ether_type);	//TODO printf protocole
+
+	if(verbose >=2 || (ether_type != 0x0800 && ether_type != 0x86dd))
+	{
+		printf("Destination Address: ");
+		printEthAddr(enteteEth->ether_dhost);
+		printf("\tSource Address: ");
+		printEthAddr(enteteEth->ether_shost);
+		printf("\t");
+
+	}
+
+	if(verbose >= 2)
+	{
+		printf("EtherType: ");
+		printf("%x\n",ether_type);
+	}
 
 
 	//TODO CRC
 
 	void* enteteNiv3;
 	enteteNiv3 = entete+sizeof(struct ether_header);
-	printLevelLayer();
-
+	
 	switch(ether_type)
 	{
 		case 0x0800:
-			printf("IPv4\n");
+			if(verbose >= 2)
+			{
+				printf("IPv4");
+			}
+			if(verbose == 3)
+			{
+				printf("\n");
+			}
 			treatIPv4(enteteNiv3);
 			break;
 		case 0x86dd:
-			printf("IPv6\n");
+			if(verbose >= 2)
+			{
+				printf("IPv6");
+			}
+			if(verbose == 3)
+			{
+				printf("\n");
+			}
 			treatIPv6(enteteNiv3);
 			break;
 		case 0x0806:
-			printf("ARP\n");
+			if(verbose >= 2)
+			{
+				printf("ARP");
+			}
+			if(verbose == 3)
+			{
+				printf("\n");
+			}
 			treatARP(enteteNiv3);
 			break;
 		default:

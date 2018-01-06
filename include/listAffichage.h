@@ -4,6 +4,8 @@
 #define SRC 0
 #define DST 1
 
+#include <stdlib.h>
+
 struct listAffichage
 {
 	u_int16_t port;

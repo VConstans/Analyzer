@@ -7,7 +7,7 @@ void treatARP(void* entete)
 	levelPrinting = 1;
 
 	printLevelLayer();
-	printf("ARP:\n");
+	printf("ARP: ");
 
 	struct arphdr* enteteARP = (struct arphdr*)entete;
 

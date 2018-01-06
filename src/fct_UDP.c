@@ -6,8 +6,20 @@ void treatUDP(void* entete)
 	extern int verbose;
 	levelPrinting = 2;
 
-	printLevelLayer();
-	printf("UDP:\n");
+	if(verbose == 3)
+	{
+		printLevelLayer();
+	}
+	printf("UDP");
+
+	if(verbose == 1)
+	{
+		printf("\t");
+	}
+	else
+	{
+		printf(": ");
+	}
 
 	struct udphdr* enteteUDP = (struct udphdr*)entete;
 
@@ -16,18 +28,40 @@ void treatUDP(void* entete)
 	u_int16_t lg = ntohs(enteteUDP->len);
 	u_int16_t check = ntohs(enteteUDP->check);
 
-	printLevelLayer();
-	printf("Port source %d\n",source);
-	printLevelLayer();
-	printf("Port destination %d\n",destination);
-	printLevelLayer();
-	printf("Longueur %d\n",lg);
-	printLevelLayer();
-	printf("Checksum %x\n",check);
+	if(verbose == 3)
+	{
+		printLevelLayer();
+	}
+	printf("Port source %d\t",source);
+	if(verbose == 3)
+	{
+		printf("\n");
+		printLevelLayer();
+	}
+	printf("Port destination %d\t",destination);
+	if(verbose == 3)
+	{
+		printLevelLayer();
+	}
+
+	if(verbose >= 2)
+	{
+		printf("Longueur %d\t",lg);
+		if(verbose == 3)
+		{
+			printf("\n");
+			printLevelLayer();
+		}
+		printf("Checksum %x\t",check);
+	}
 
 
 	void* enteteNiv7 = entete + sizeof(struct udphdr);
 
+	if(verbose >= 2)
+	{
+		printf("\n");
+	}
 
 	if(lg > 8)
 	{
@@ -42,7 +76,5 @@ void treatUDP(void* entete)
 		{
 			treatDNS(enteteNiv7);
 		}
-
-		//XXX NAT
 	}
 }

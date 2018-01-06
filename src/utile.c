@@ -3,6 +3,8 @@
 
 #define IP_ALEN 4
 
+extern int verbose;
+
 void printIPv4Addr(u_int32_t addr)
 {
 //	addr = ntohl(addr);
@@ -21,7 +23,10 @@ void printIPv4Addr(u_int32_t addr)
 
 		addr = addr>>8;
 	}	
-	printf("\n");
+	if(verbose >= 2)
+	{
+		printf("\n");
+	}
 }
 
 void printIPv4Addr_u_int8(u_int8_t* addr)
@@ -42,7 +47,10 @@ void printIPv4Addr_u_int8(u_int8_t* addr)
 
 		addr = addr+1;
 	}	
-	printf("\n");
+	if(verbose >= 2)
+	{
+		printf("\n");
+	}
 }
 
 
@@ -58,7 +66,10 @@ void printIPv6Addr(uint8_t* addr)
 			printf(":");
 		}
 	}
-	printf("\n");
+	if(verbose >= 2)
+	{
+		printf("\n");
+	}
 }
 
 
@@ -74,7 +85,10 @@ void printEthAddr(u_int8_t addr[])
 			printf(":");
 		}
 	}
-	printf("\n");
+	if(verbose >= 2)
+	{
+		printf("\n");
+	}
 }
 
 

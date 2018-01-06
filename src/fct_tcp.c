@@ -6,8 +6,19 @@ void treatTCP(void* entete,int len)
 	extern int verbose;
 	levelPrinting = 2;
 
-	printLevelLayer();
-	printf("TCP:\n");
+	if(verbose == 3)
+	{
+		printLevelLayer();
+	}
+	printf("TCP");
+	if(verbose == 1)
+	{
+		printf("\t");
+	}
+	else
+	{
+		printf(": ");
+	}
 
 	struct tcphdr* enteteTCP = (struct tcphdr*) entete;
 
@@ -16,60 +27,92 @@ void treatTCP(void* entete,int len)
 	u_int32_t seq = ntohl(enteteTCP->seq);
 	u_int32_t ack_seq = ntohl(enteteTCP->ack_seq);
 
-	printLevelLayer();
-	printf("Port Source %d\n",source);
-	printLevelLayer();
-	printf("Port destination %d\n",destination);
-	printLevelLayer();
-	printf("Numéro de séquence %u\n",seq);	//TODO mauvais numéro
-	printLevelLayer();
-	printf("Numéro d'ack %u\n",ack_seq);		//TODO mauvais numéro
-
-
+	if(verbose == 3)
+	{
+		printLevelLayer();
+	}
+	printf("Port Source %d\t",source);
+	if(verbose == 3)
+	{
+		printf("\n");
+		printLevelLayer();
+	}
+	printf("Port destination %d\t",destination);
 
 	int hdrLen = enteteTCP->doff;
-	printLevelLayer();
-	printf("Data offset %d\n",hdrLen);
 
+	if(verbose >= 2)
+	{
+		if(verbose == 3)
+		{
+			printf("\n");
+			printLevelLayer();
+		}
+		printf("Numéro de séquence %u\t",seq);
+		if(verbose == 3)
+		{
+			printf("\n");
+			printLevelLayer();
+		}
+		printf("Numéro d'ack %u\t",ack_seq);
+	}
+	if(verbose == 3)
+	{
+		printf("\n");
+		printLevelLayer();
+		printf("Data offset %d\n",hdrLen);
+		printLevelLayer();
+	}
 
-	printLevelLayer();
-	printf("Flags: ");
-	if(enteteTCP->ack)
+	if(verbose >= 2)
 	{
-		printf("ACK ");
+		printf("Flags: ");
+		if(enteteTCP->ack)
+		{
+			printf("ACK ");
+		}
+		if(enteteTCP->urg)
+		{
+			printf("URG ");
+		}
+		if(enteteTCP->syn)
+		{
+			printf("SYN ");
+		}
+		if(enteteTCP->fin)
+		{
+			printf("FIN ");
+		}
+		if(enteteTCP->psh)
+		{
+			printf("PSH ");
+		}
+		if(enteteTCP->rst)
+		{
+			printf("RST ");
+		}
+		//TODO autre flags
+		if(verbose == 3)
+		{
+			printf("\n");
+		}
+		else
+		{
+			printf("\t");
+		}
 	}
-	if(enteteTCP->urg)
-	{
-		printf("URG ");
-	}
-	if(enteteTCP->syn)
-	{
-		printf("SYN ");
-	}
-	if(enteteTCP->fin)
-	{
-		printf("FIN ");
-	}
-	if(enteteTCP->psh)
-	{
-		printf("PSH ");
-	}
-	if(enteteTCP->rst)
-	{
-		printf("RST ");
-	}
-	//TODO autre flags
-	printf("\n");
 
-	printLevelLayer();
-	printf("Window %d\n",ntohs(enteteTCP->window));
+	if(verbose == 3)
+	{
+		printLevelLayer();
+		printf("Window %d\n",ntohs(enteteTCP->window));
 
-	printLevelLayer();
-	printf("Checksum %x\n",ntohs(enteteTCP->check)); 
+		printLevelLayer();
+		printf("Checksum %x\n",ntohs(enteteTCP->check)); 
 
-	printLevelLayer();
-	printf("Urgent pointer %d\n",ntohs(enteteTCP->urg_ptr)); 	//XXX quel boutisme?
-
+		printLevelLayer();
+		printf("Urgent pointer %d\n",ntohs(enteteTCP->urg_ptr)); 	//XXX quel boutisme?
+	}
 
 	if(hdrLen > 5)
 	{
@@ -82,6 +125,11 @@ void treatTCP(void* entete,int len)
 	void* enteteNiv7 = entete +4*hdrLen;
 
 	len -= 4*hdrLen;
+
+	if(verbose >= 2)
+	{
+		printf("\n");
+	}
 
 	if(len > 0 /*&& enteteTCP->psh*/)
 		{
@@ -96,7 +144,7 @@ void treatTCP(void* entete,int len)
 			treatSMTP(enteteNiv7,len);
 		}
 
-		if(source == 21 ||/* source == 20 ||*/ destination == 21 /*|| destination == 20*/)
+		if(source == 21 || destination == 21)
 		{
 			treatFTP(enteteNiv7,len);
 		}

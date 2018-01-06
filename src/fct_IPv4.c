@@ -1,5 +1,4 @@
 #include "fct_IPv4.h"
-#include "utile.h"
 
 
 
@@ -9,53 +8,104 @@ void treatIPv4(void* entete)
 	extern int verbose;
 	levelPrinting = 1;
 
-	printLevelLayer();
-	printf("IPv4:\n");
+	if(verbose >= 2)
+	{
+		printLevelLayer();
+		printf("IPv4: ");
+	}
 
 	struct iphdr* enteteIP = (struct iphdr*)entete;
 
-	printLevelLayer();
-	printf("Version %d\n",enteteIP->version);
-	//TODO verifier qu'il s'agit bien de la version 4 de IP
-
-	printLevelLayer();
-	printf("IHL %d\n",enteteIP->ihl);
-
-	printLevelLayer();
-	printf("TOS %x\n", enteteIP->tos);
+	if(verbose == 3)
+	{
+		printf("\n");
+		printLevelLayer();
+		printf("Version %d\n",enteteIP->version);
+		printLevelLayer();
+		printf("IHL %d\n",enteteIP->ihl);
+		printLevelLayer();
+		printf("TOS %x\n", enteteIP->tos);
+		printLevelLayer();
+	}
 
 	int len = ntohs(enteteIP->tot_len);
-	printLevelLayer();
-	printf("Total length %d\n",len);
+	if(verbose >= 2)
+	{
+		printf("Total length %d\t",len);
 
-	printLevelLayer();
-	printf("Identification %x\n",enteteIP->id);
+		if(verbose == 3)
+		{
+			printf("\n");
+		}
+	}
 
-	printLevelLayer();
-	printf("Fragment Offset %x\n",enteteIP->frag_off);
+	if(verbose == 3)
+	{
+		printLevelLayer();
+		printf("Identification %x\n",enteteIP->id);
 
-	printLevelLayer();
-	printf("TTL %d\n",enteteIP->ttl);
+		printLevelLayer();
+		printf("Fragment Offset %x\n",enteteIP->frag_off);
 
-	printLevelLayer();
-	printf("Protocol %x\n",enteteIP->protocol);
+		printLevelLayer();
+	}
 
-	printLevelLayer();
-	printf("Checksum %x\n",ntohs(enteteIP->check));
+	if(verbose >= 2)
+	{
+		printf("TTL %d\t",enteteIP->ttl);
 
-	printLevelLayer();
+		if(verbose == 3)
+		{
+			printf("\n");
+		}
+	}
+
+	if(verbose == 3)
+	{
+		printLevelLayer();
+		printf("Protocol %x\n",enteteIP->protocol);
+	}
+
+	if(verbose >= 2)
+	{
+		printLevelLayer();
+		printf("Checksum %x\t",ntohs(enteteIP->check));
+
+		if(verbose == 3)
+		{
+			printf("\n");
+		}
+	}
+
+	if(verbose == 3)
+	{
+		printLevelLayer();
+	}
 	printf("Adresse source ");
 	printIPv4Addr(enteteIP->saddr);
 
-	printLevelLayer();
+	if(verbose == 3)
+	{
+		printf("\n");
+		printLevelLayer();
+	}
+	else
+	{
+		printf("\t");
+	}
 	printf("Adresse destination ");
 	printIPv4Addr(enteteIP->daddr);
+	printf("\t");
 
 	if(enteteIP->ihl > 5)
 	{
 		//TODO traitement options
 	}
 
+	if(verbose >= 2)
+	{
+		printf("\n");
+	}
 
 	void* enteteNiv4 = entete+4*enteteIP->ihl;
 

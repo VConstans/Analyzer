@@ -8,6 +8,7 @@
 
 #include "fct_UDP.h"
 #include "fct_tcp.h"
+#include "utile.h"
 
 
 void treatIPv4(void* entete);
