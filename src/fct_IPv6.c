@@ -3,9 +3,11 @@
 void treatIPv6(void* entete)
 {
 	extern int levelPrinting;
+	extern int verbose;
 	levelPrinting = 1;
 
-	printf("IPV6\n");
+	printLevelLayer();
+	printf("IPv6:\n");
 
 	struct ip6_hdr* enteteIP = (struct ip6_hdr*)entete;
 
@@ -19,21 +21,33 @@ void treatIPv6(void* entete)
 
 	if(version != 6)
 	{
+		printLevelLayer();
 		printf("Erreur, Ethernet indique un paquet IPv6, mais il ne s'agit pas d'un paquet IPv6\n");
 		exit(-1);
 	}
 
+	printLevelLayer();
         printf("Version: %d\n",version);
+	printLevelLayer();
         printf("Classe: %x\n",classe);
+	printLevelLayer();
         printf("Label: %x\n",label);
 
 	u_int16_t len = ntohs(enteteIP->ip6_ctlun.ip6_un1.ip6_un1_plen);
 
+	printLevelLayer();
 	printf("Longueur: %d\n",len);
+	printLevelLayer();
 	printf("Next header: %d\n",enteteIP->ip6_ctlun.ip6_un1.ip6_un1_nxt);
+	printLevelLayer();
 	printf("Hop limit: %d\n",enteteIP->ip6_ctlun.ip6_un1.ip6_un1_hlim);
 
+	printLevelLayer();
+	printf("Source Address: ");
 	printIPv6Addr(enteteIP->ip6_src.__in6_u.__u6_addr8);
+
+	printLevelLayer();
+	printf("Destination Address: ");
 	printIPv6Addr(enteteIP->ip6_dst.__in6_u.__u6_addr8);
 
 	//TODO option
@@ -65,6 +79,7 @@ void treatIPv6(void* entete)
 			treatUDP(enteteNiv4);
 			break;
 		default:
+			printLevelLayer();
 			printf("Pas de niveau 4");
 			break;
 	}

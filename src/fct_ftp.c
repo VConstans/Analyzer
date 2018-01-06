@@ -2,19 +2,28 @@
 
 void treatFTP(void* entete, int len)
 {
-	printf("==================>ftp %d\n",len);
+	extern int levelPrinting;
+	extern int verbose;
+	levelPrinting = 3;
+
+	printLevelLayer();
+	printf("FTP:\n");
 
 	u_int8_t* messageFTP = (u_int8_t*)entete;
 
 	if(*messageFTP >= 0x30 && *messageFTP <=0x39)
 	{
+		printLevelLayer();
 		printf("Response\n");
+		printLevelLayer();
 		printf("Response code: ");
 		printf("%c",messageFTP[0]);
 		printf("%c",messageFTP[1]);
 		printf("%c",messageFTP[2]);
 		printf("\n");
 
+
+		printLevelLayer();
 		if(messageFTP[3] != 0x20)
 		{
 			printf("Error ftp format message\n");
@@ -33,7 +42,9 @@ void treatFTP(void* entete, int len)
 	}
 	else
 	{
+		printLevelLayer();
 		printf("Request\n");
+		printLevelLayer();
 		printf("Request Command: ");
 
 		while(*messageFTP != 0x20)
@@ -52,6 +63,7 @@ void treatFTP(void* entete, int len)
 		printf("\n");
 
 		int i;
+		printLevelLayer();
 		for(i=0;i<len;i++)
 		{
 			printf("%c",*messageFTP);

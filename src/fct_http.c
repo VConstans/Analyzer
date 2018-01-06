@@ -3,20 +3,24 @@
 void treatHTTP(void* entete, int len)
 {
 	extern int levelPrinting;
+	extern int verbose;
 	levelPrinting = 3;
 
-	printf("=====================>HTTP\n");
+	printLevelLayer();
+	printf("HTTP:\n");
 
 	u_int8_t* httpPayload = (u_int8_t*)entete;
 	int enteteHTTP = 0;
 
 	if(!memcmp(httpPayload,"HTTP",4))
 	{
+		printLevelLayer();
 		printf("Reply\n");
 		enteteHTTP = 1;
 	}
 	else if(!memcmp(httpPayload,"GET",3) || !memcmp(httpPayload,"POST",4) || !memcmp(httpPayload,"HEAD",4))
 	{
+		printLevelLayer();
 		printf("Request ");
 		enteteHTTP = 1;
 	}
@@ -65,7 +69,12 @@ void treatHTTP(void* entete, int len)
 				}
 			}
 
-			printf("%c",httpPayload[i]);
+			if(httpPayload[i-1] == '\n')
+			{
+				printLevelLayer();
+			}
+
+			printHexToAscii(httpPayload[i]);
 		}
 	}
 

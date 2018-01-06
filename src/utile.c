@@ -97,6 +97,13 @@ void printHexToAscii(u_int8_t car)
 }
 
 
+void printfAlign(char* string)
+{
+	printLevelLayer();
+
+	printf("%s",string);
+}
+
 void printHexToAscii_len(int len, u_int8_t* string)
 {
 	printLevelLayer();

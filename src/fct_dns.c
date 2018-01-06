@@ -3,6 +3,7 @@
 
 void decodeClass(u_int16_t class)
 {
+	printLevelLayer();
 	printf("Class: ");
 	switch(class)
 	{
@@ -18,6 +19,7 @@ void decodeClass(u_int16_t class)
 
 void decodeType(u_int16_t type)
 {
+	printLevelLayer();
 	printf("Type: ");
 	switch(type)
 	{
@@ -77,7 +79,6 @@ u_int8_t* printLabel(u_int8_t* name, u_int8_t* entete)
 			}
 		}
 	}
-	printf("\n");
 	return ++name;
 }
 
@@ -96,13 +97,16 @@ u_int8_t* decodeAnswer(u_int8_t* curseur,u_int8_t* entete)
 	decodeType(type);
 	decodeClass(class);
 
+	printLevelLayer();
 	printf("TTL: %d\n",ttl);
+	printLevelLayer();
 	printf("Data length: %d\n",len);
 
 	u_int8_t* answer_end = finName + 10 + len;
 
 	if(class == 1)
 	{
+		printLevelLayer();
 		u_int8_t* fin;
 		switch(type)
 		{
@@ -120,16 +124,20 @@ u_int8_t* decodeAnswer(u_int8_t* curseur,u_int8_t* entete)
 			case 2:
 				printf("Name: ");
 				printLabel(&answer->adata,entete);
+				printf("\n");
 				break;
 			case 5:
 				printf("Name: ");
 				printLabel(&answer->adata,entete);
+				printf("\n");
 				break;
 			case 6:
 				printf("Primary NS: ");
 				fin = printLabel(&answer->adata,entete);
+				printf("\n");
 				printf("Admin mailbox: ");
 				fin = printLabel(fin,entete);
+				printf("\n");
 
 				u_int32_t* SOA_data = (u_int32_t*)fin;
 				printf("Serial Number: %d\n",ntohl(SOA_data[0]));
@@ -142,11 +150,13 @@ u_int8_t* decodeAnswer(u_int8_t* curseur,u_int8_t* entete)
 			case 12:
 				printf("Name: ");
 				printLabel(&answer->adata,entete);
+				printf("\n");
 				break;
 			case 15:
 				printf("Preference: %d",*((u_int16_t*)(&answer->adata)));
 				printf("Mail Exchanger: ");
 				printLabel(&(answer->adata) + 2,entete);
+				printf("\n");
 				break;
 			case 28:
 				if(len == 16)
@@ -172,15 +182,33 @@ u_int8_t* decodeAnswer(u_int8_t* curseur,u_int8_t* entete)
 void treatDNS(void* entete)
 {
 	extern int levelPrinting;
+	extern int verbose;
 	levelPrinting = 3;
+
+	printLevelLayer();
+	printf("DNS\n");
 
 	struct dns_header* enteteDNS = (struct dns_header*)entete;
 
+	printLevelLayer();
 	printf("Identifier: %x\n",ntohs(enteteDNS->tid));
-	u_int16_t flags = ntohs(enteteDNS->flags);
-	printf("Flags: %x ",flags);
-	if((flags & 0x8000) >> 15) 	{printf("Response ");}	else	{printf("Query ");}
 
+	u_int16_t flags = ntohs(enteteDNS->flags);
+	printLevelLayer();
+	printf("Flags: %x ",flags);
+
+	printLevelLayer();
+	if((flags & 0x8000) >> 15)
+	{
+		printf("Response ");
+	}
+	else
+	{
+		printf("Query ");
+	}
+
+	printLevelLayer();
+	printf("Flags: ");
 	switch((flags & 0x7800) >> 11)
 	{
 		case 0:
@@ -237,9 +265,13 @@ void treatDNS(void* entete)
 	u_int16_t nauth = ntohs(enteteDNS->nauth);
 	u_int16_t nother = ntohs(enteteDNS->nother);
 
+	printLevelLayer();
 	printf("Questions: %d\n",nquestion);
+	printLevelLayer();
 	printf("Answer RR: %d\n",nanswer);
+	printLevelLayer();
 	printf("Authority RR: %d\n",nauth);
+	printLevelLayer();
 	printf("Additional RR: %d\n",nother);
 
 	u_int8_t* curseur = &(enteteDNS->data);
@@ -247,11 +279,14 @@ void treatDNS(void* entete)
 	int i;
 	if(nquestion > 0)
 	{
+		printLevelLayer();
 		printf("Queries\n");
 	}
+
 	for(i=0;i<nquestion;i++)
 	{
 		u_int8_t* finName = printLabel(curseur,entete);
+		printf("\n");
 		struct dns_querie* querie = (struct dns_querie*)finName;
 
 		decodeType(ntohs(querie->qtype));
@@ -262,6 +297,7 @@ void treatDNS(void* entete)
 
 	if(nanswer > 0)
 	{
+		printLevelLayer();
 		printf("Answer\n");
 	}
 	for(i=0;i<nanswer;i++)
@@ -271,6 +307,7 @@ void treatDNS(void* entete)
 
 	if(nauth > 0)
 	{
+		printLevelLayer();
 		printf("Authtority Record\n");
 	}
 	for(i=0;i<nauth;i++)
@@ -280,6 +317,7 @@ void treatDNS(void* entete)
 
 	if(nother > 0)
 	{
+		printLevelLayer();
 		printf("Additional Record\n");
 	}
 	for(i=0;i<nother;i++)

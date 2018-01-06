@@ -6,6 +6,7 @@
 
 #include <net/ethernet.h>
 #include <netinet/ip.h>
+#include "utile.h"
 #include "fct_IPv4.h"
 #include "fct_IPv6.h"
 #include "fct_arp.h"

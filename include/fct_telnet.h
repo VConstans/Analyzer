@@ -32,6 +32,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <netinet/in.h>
+#include "utile.h"
 
 
 void treatTelnet(void*,int);

@@ -2,31 +2,62 @@
 
 void treatSMTP(void* entete, int len)
 {
-	printf("===============>smtp\n");
+	printLevelLayer();
+	printf("SMTP:\n");
 	extern int levelPrinting;
+	extern int verbose;
 	levelPrinting = 3;
 
 	u_int8_t* smtpPayload = (u_int8_t*)entete;
+/*
+	int i = 0;
 
-	if(smtpPayload[0] >= '0' && smtpPayload[0] <= '9')
+	struct listAffichage* listAffichage = getAffichage(...)
+
+	if(listAffichage->in_data)
 	{
-		printf("Reply\n");
+		if(!memcmp(&smtpPayload[0],".\r\n",3))
+		{
+			listAffichage->affichage = 1;
+			listAffichage->in_data = 0;
+		}
+		else
+		{
+			for(i=0;i<len;i++)
+			{
+				if(listAffichage->affichage)
+				{
+					printf("%c",smtpPayload[i]);
+				}
+			}
+		}
 	}
 	else
 	{
-		printf("Request ");
-	}
 
 
-	int i = 0;
-	int affiche = 0;
 
-	struct 
 
-	if(enteteHTTP)
-	{
-		affiche = 1;
-		for(i=0;i<len;i++)
+
+		if(smtpPayload[0] >= '0' && smtpPayload[0] <= '9')
+		{
+			printf("Reply code: %c%c%c\n",smtpPayload[0],smtpPayload[1],smtpPayload[2]);
+			i = 3;
+			//TODO reply message
+		}
+		else
+		{
+			printf("Request: ");
+			while(smtpPayload[i] != ' ')
+			{
+				printf("%c",smtpPayload[i]);
+				i++;
+			}
+			printf("\n");
+		}
+
+
+		for(;i<len;i++)
 		{
 			if(smtpPayload[i] == '\n')
 			{
@@ -34,30 +65,25 @@ void treatSMTP(void* entete, int len)
 				{
 					if(memcmp(&smtpPayload[i+15],"text",4)!= 0)
 					{
-						affiche = 0;
-						//TODO set
+						setAffichage(listAffichage,port,sens,0);
 					}
 				}
 				if(!memcmp(&smtpPayload[i+1],"Content-Transfer-Encoding: ",18))
 				{
 					if(memcmp(&smtpPayload[19],"8bit",4))
 					{
-						affiche = 0;
-						//TODO set
+						setAffichage(listAffichage,port,sens,0);
 					}
 				}
 				
 			}
 
-			if(smtpPayload[i] == '\r')
+			if(!memcmp(&smtpPayload[0],"DATA",4))
 			{
-				if(!memcmp(&smtpPayload[i],"\r\n\r\n",4))
-				{
-					break;
-				}
+				setDataAffichage(listAffichage,port,sens,1);
 			}
 
 			printf("%c",smtpPayload[i]);
 		}
-	}
+	}*/
 }

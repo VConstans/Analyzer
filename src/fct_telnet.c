@@ -3,9 +3,11 @@
 void treatTelnet(void* entete,int len)
 {
 	extern int levelPrinting;
+	extern int verbose;
 	levelPrinting = 3;
 
-	printf("Telnet\n");
+	printLevelLayer();
+	printf("Telnet:\n");
 
 	u_int8_t* message = (u_int8_t*)entete;
 
@@ -14,6 +16,7 @@ void treatTelnet(void* entete,int len)
 	{
 		if(message[i] == IAC)
 		{
+			printLevelLayer();
 			i++;
 			switch (message[i])
 			{
@@ -78,7 +81,7 @@ void treatTelnet(void* entete,int len)
 								printf("Terminal Size: ");
 								printf("Width: %d ",ntohs(*((u_int16_t*)(message+i))));
 								i+=2;
-								printf("Width: %d ",ntohs(*((u_int16_t*)(message+i))));
+								printf("Height: %d\n",ntohs(*((u_int16_t*)(message+i))));
 								break;
 							case TS:
 								printf("Terminal Speed: ");

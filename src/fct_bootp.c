@@ -6,10 +6,13 @@ void treatBootp(void* entete)
 	extern int levelPrinting;
 	levelPrinting = 3;
 
-	struct bootp* enteteB = (struct bootp*)entete;
-
+	printLevelLayer();
 	printf("BOOTP\n");
 
+	struct bootp* enteteB = (struct bootp*)entete;
+
+
+	printLevelLayer();
 	switch(enteteB->bp_op)
 	{
 		case 1:
@@ -22,22 +25,33 @@ void treatBootp(void* entete)
 			printf("Type de message bootp inconnu\n");
 	}
 
+	printLevelLayer();
 	printf("htype %d\n",enteteB->bp_htype);
+	printLevelLayer();
 	printf("hlen %d\n",enteteB->bp_hlen);
+	printLevelLayer();
 	printf("hops %d\n",enteteB->bp_hops);
+	printLevelLayer();
 	printf("xid %x\n",ntohl(enteteB->bp_xid));
+	printLevelLayer();
 	printf("sec %d\n",enteteB->bp_secs);
+	printLevelLayer();
 	printf("flags %x\n",enteteB->bp_flags);
 
 	//TODO printf nom addr
+	printLevelLayer();
 	printIPv4Addr((u_int32_t)(enteteB->bp_ciaddr.s_addr));
+	printLevelLayer();
 	printIPv4Addr((u_int32_t)(enteteB->bp_yiaddr.s_addr));
+	printLevelLayer();
 	printIPv4Addr((u_int32_t)(enteteB->bp_siaddr.s_addr));
+	printLevelLayer();
 	printIPv4Addr((u_int32_t)(enteteB->bp_giaddr.s_addr));
 
 	//Si les adresses physique sont de type ethernet
 	if(enteteB->bp_hlen == 6)
 	{
+		printLevelLayer();
 		printf("Adresse physique du client: ");
 		printEthAddr(enteteB->bp_chaddr);
 	}
@@ -46,7 +60,8 @@ void treatBootp(void* entete)
 	//TODO file
 
 
-	printf("vend ");
+	printLevelLayer();
+	printf("Vendor: ");
 	if(ntohl(*((u_int32_t*)(enteteB->bp_vend))) == 0x63825363)	//XXX magic cookie dans define
 	{
 		printf("Magic cookie\n");
@@ -95,8 +110,7 @@ void decodeDHCPOption(u_int8_t* ptrOption)
 					break;
 				case DHCPINFORM:
 					printf("DHCP INFORM\n");
-					
-break;
+					break;
 			}
 			break;
 

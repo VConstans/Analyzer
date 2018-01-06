@@ -3,7 +3,11 @@
 void treatARP(void* entete)
 {
 	extern int levelPrinting;
+	extern int verbose;
 	levelPrinting = 1;
+
+	printLevelLayer();
+	printf("ARP:\n");
 
 	struct arphdr* enteteARP = (struct arphdr*)entete;
 
@@ -16,13 +20,16 @@ void treatARP(void* entete)
 	switch(op)
 	{
 		case ARPOP_REQUEST:
+			printLevelLayer();
 			printf("ARP Request\n");
 			break;
 		case ARPOP_REPLY:
+			printLevelLayer();
 			printf("ARP Reply\n");
 			break;
 	}
 
+	printLevelLayer();
 	printf("Hardware type: %d ",hrd);
 
 	switch(hrd)
@@ -37,6 +44,7 @@ void treatARP(void* entete)
 	printf("\n");
 
 
+	printLevelLayer();
 	printf("Protocol type: %d ",pro);
 	switch(pro)
 	{
@@ -47,6 +55,7 @@ void treatARP(void* entete)
 	}
 	printf("\n");
 
+	printLevelLayer();
 	printf("Hardware length: %d ",hln);
 	switch(hln)
 	{
@@ -60,6 +69,7 @@ void treatARP(void* entete)
 	printf("\n");
 
 
+	printLevelLayer();
 	printf("Protocol adress length: %d ",pln);
 	switch(pln)
 	{
@@ -75,10 +85,13 @@ void treatARP(void* entete)
 
 
 	void* addrTmp = entete + sizeof(struct arphdr);
+	printLevelLayer();
 	printf("Taille %ld\n",sizeof(struct arphdr));
+	printLevelLayer();
 	printf("Address %p\n",addrTmp);
 
 
+	printLevelLayer();
 	printf("Sender Hardware Address: ");
 	if(hrd == ARPHRD_ETHER && hln == 6)
 	{
@@ -92,6 +105,7 @@ void treatARP(void* entete)
 	addrTmp += hln;
 
 
+	printLevelLayer();
 	printf("Sender Internet Address: ");
 	if(pro == 0x800)
 	{
@@ -113,6 +127,8 @@ void treatARP(void* entete)
 
 	addrTmp += pln;
 
+
+	printLevelLayer();
 	printf("Target Hardware address: ");
 	switch(op)
 	{
@@ -137,6 +153,7 @@ void treatARP(void* entete)
 	addrTmp += hln;
 
 
+	printLevelLayer();
 	printf("Target Internet Address: ");
 	if(pro == 0x800)
 	{

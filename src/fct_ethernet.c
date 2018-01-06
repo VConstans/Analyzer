@@ -1,21 +1,30 @@
 #include "fct_ethernet.h"
-#include "utile.h"
-
 
 
 void treatEthernet(void* entete)
 {
 	extern int levelPrinting;
+	extern int verbose;
 	levelPrinting = 0;
+
+	printLevelLayer();
+	printf("ETHERNET:\n");
 
 	struct ether_header* enteteEth = (struct ether_header*)entete;
 
+	printLevelLayer();
 	printf("Adresse dest\t");
+	printLevelLayer();
 	printEthAddr(enteteEth->ether_dhost);
+	printLevelLayer();
 	printf("Adresse src\t");
+	printLevelLayer();
 	printEthAddr(enteteEth->ether_shost);
 
 	u_int16_t ether_type = ntohs(enteteEth->ether_type);
+	printLevelLayer();
+	printf("EtherType: ");
+	printLevelLayer();
 	printf("%x ",ether_type);	//TODO printf protocole
 
 
@@ -23,6 +32,7 @@ void treatEthernet(void* entete)
 
 	void* enteteNiv3;
 	enteteNiv3 = entete+sizeof(struct ether_header);
+	printLevelLayer();
 
 	switch(ether_type)
 	{

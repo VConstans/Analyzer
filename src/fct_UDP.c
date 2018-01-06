@@ -3,7 +3,11 @@
 void treatUDP(void* entete)
 {
 	extern int levelPrinting;
+	extern int verbose;
 	levelPrinting = 2;
+
+	printLevelLayer();
+	printf("UDP:\n");
 
 	struct udphdr* enteteUDP = (struct udphdr*)entete;
 
@@ -12,9 +16,13 @@ void treatUDP(void* entete)
 	u_int16_t lg = ntohs(enteteUDP->len);
 	u_int16_t check = ntohs(enteteUDP->check);
 
+	printLevelLayer();
 	printf("Port source %d\n",source);
+	printLevelLayer();
 	printf("Port destination %d\n",destination);
+	printLevelLayer();
 	printf("Longueur %d\n",lg);
+	printLevelLayer();
 	printf("Checksum %x\n",check);
 
 
