@@ -6,8 +6,18 @@ void treatARP(void* entete)
 	extern int verbose;
 	levelPrinting = 1;
 
-	printLevelLayer();
-	printf("ARP: ");
+	if(verbose == 3)
+	{
+		printLevelLayer();
+	}
+	if(verbose >= 2)
+	{
+		printf("ARP: ");
+	}
+	if(verbose == 3)
+	{
+		printf("\n");
+	}
 
 	struct arphdr* enteteARP = (struct arphdr*)entete;
 
@@ -21,139 +31,179 @@ void treatARP(void* entete)
 	{
 		case ARPOP_REQUEST:
 			printLevelLayer();
-			printf("ARP Request\n");
+			printf("ARP Request");
 			break;
 		case ARPOP_REPLY:
 			printLevelLayer();
-			printf("ARP Reply\n");
+			printf("ARP Reply");
 			break;
 	}
-
-	printLevelLayer();
-	printf("Hardware type: %d ",hrd);
-
-	switch(hrd)
+	if(verbose == 3)
 	{
-		case ARPHRD_ETHER:
-			printf("Ethernet");
-			break;
-
-		//TODO autre cas
-		//TODO default
-	}
-	printf("\n");
-
-
-	printLevelLayer();
-	printf("Protocol type: %d ",pro);
-	switch(pro)
-	{
-		case 0x800:
-			printf("IP");
-			break;
-		//TODO default
-	}
-	printf("\n");
-
-	printLevelLayer();
-	printf("Hardware length: %d ",hln);
-	switch(hln)
-	{
-		case 6:
-			printf("Ethernet");
-			break;
-
-		//TODO autre cas
-		//TODO default
-	}
-	printf("\n");
-
-
-	printLevelLayer();
-	printf("Protocol adress length: %d ",pln);
-	switch(pln)
-	{
-		case 4:
-			printf("IPv4");
-			break;
-		case 16:
-			printf("IPv6");
-			break;
-		//TODO default
-	}
-	printf("\n");
-
-
-	void* addrTmp = entete + sizeof(struct arphdr);
-	printLevelLayer();
-	printf("Taille %ld\n",sizeof(struct arphdr));
-	printLevelLayer();
-	printf("Address %p\n",addrTmp);
-
-
-	printLevelLayer();
-	printf("Sender Hardware Address: ");
-	if(hrd == ARPHRD_ETHER && hln == 6)
-	{
-		printEthAddr((u_int8_t*)addrTmp);
+		printf("\n");
 	}
 	else
 	{
-		printf("Adresse physique pas ethernet\n");
+		printf("\t");
 	}
 
-	addrTmp += hln;
-
-
-	printLevelLayer();
-	printf("Sender Internet Address: ");
-	if(pro == 0x800)
+	if(verbose == 3)
 	{
-		switch(pln)
+		printLevelLayer();
+		printf("Hardware type: %d ",hrd);
+
+		switch(hrd)
 		{
-			case 4:
-				printIPv4Addr_u_int8((u_int8_t*)addrTmp);
+			case ARPHRD_ETHER:
+				printf("Ethernet");
 				break;
-			case 16:
-				printIPv6Addr((u_int8_t*)addrTmp);
+
+			//TODO autre cas
+			//TODO default
+		}
+		printf("\n");
+
+
+		printLevelLayer();
+		printf("Protocol type: %d ",pro);
+		switch(pro)
+		{
+			case 0x800:
+				printf("IP");
 				break;
 			//TODO default
 		}
-	}
-	else
-	{
-		printf("Pas IP utilisé\n");
+		printf("\n");
+
+		printLevelLayer();
+		printf("Hardware length: %d ",hln);
+		switch(hln)
+		{
+			case 6:
+				printf("Ethernet");
+				break;
+
+			//TODO autre cas
+			//TODO default
+		}
+		printf("\n");
+
+
+		printLevelLayer();
+		printf("Protocol adress length: %d ",pln);
+		switch(pln)
+		{
+			case 4:
+				printf("IPv4");
+				break;
+			case 16:
+				printf("IPv6");
+				break;
+			//TODO default
+		}
+		printf("\n");
+		printLevelLayer();
+
 	}
 
+	void* addrTmp = entete + sizeof(struct arphdr);
+
+	if(verbose >= 2)
+	{
+		printf("Sender Hardware Address: ");
+		if(hrd == ARPHRD_ETHER && hln == 6)
+		{
+			printEthAddr((u_int8_t*)addrTmp);
+		}
+		else
+		{
+			printf("Adresse physique pas ethernet");
+		}
+		if(verbose == 3)
+		{
+			printf("\n");
+		}
+		else
+		{
+			printf("\t");
+		}
+
+
+		if(verbose == 3)
+		{
+			printLevelLayer();
+		}
+	}
+
+	addrTmp += hln;
+	if(verbose >= 2)
+	{
+		printf("Sender Internet Address: ");
+		if(pro == 0x800)
+		{
+			switch(pln)
+			{
+				case 4:
+					printIPv4Addr_u_int8((u_int8_t*)addrTmp);
+					break;
+				case 16:
+					printIPv6Addr((u_int8_t*)addrTmp);
+					break;
+				//TODO default
+			}
+		}
+		else
+		{
+			printf("Pas IP utilisé");
+		}
+		if(verbose == 3)
+		{
+			printf("\n");
+			printLevelLayer();
+		}
+		else
+		{
+			printf("\t");
+		}
+	}
 	addrTmp += pln;
 
 
-	printLevelLayer();
-	printf("Target Hardware address: ");
-	switch(op)
+	if(verbose >= 2)
 	{
-		case ARPOP_REQUEST:
-			printf("Requete, donc adresse de niveau 2 inconnu\n");
-			break;
-		case ARPOP_REPLY:
-			if(hrd == ARPHRD_ETHER && hln == 6)
-			{
-				printEthAddr((u_int8_t*)addrTmp);
-			}
-			else
-			{
-				printf("Adresse physique pas ethernet\n");
-			}		
-			break;
-		default:
-			printf("Opcode inconnu\n");
+		printf("Target Hardware address: ");
+		switch(op)
+		{
+			case ARPOP_REQUEST:
+				printf("Requete, donc adresse de niveau 2 inconnu");
+				break;
+			case ARPOP_REPLY:
+				if(hrd == ARPHRD_ETHER && hln == 6)
+				{
+					printEthAddr((u_int8_t*)addrTmp);
+				}
+				else
+				{
+					printf("Adresse physique pas ethernet");
+				}		
+				break;
+			default:
+				printf("Opcode inconnu");
+		}
+		if(verbose == 3)
+		{
+			printf("\n");
+			printLevelLayer();
+		}
+		else
+		{
+			printf("\t");
+		}
 	}
 
-	
 	addrTmp += hln;
 
 
-	printLevelLayer();
 	printf("Target Internet Address: ");
 	if(pro == 0x800)
 	{
@@ -170,6 +220,8 @@ void treatARP(void* entete)
 	}
 	else
 	{
-		printf("Pas IP utilisé\n");
+		printf("Pas IP utilisé");
 	}
+
+	printf("\n");
 }
