@@ -114,9 +114,52 @@ void treatTCP(void* entete,int len)
 		printf("Urgent pointer %d\n",ntohs(enteteTCP->urg_ptr)); 	//XXX quel boutisme?
 	}
 
-	if(hdrLen > 5)
+	if(verbose >= 2)
 	{
-		//TODO traiter options
+		if(hdrLen > 5)
+		{
+			u_int8_t* option = (u_int8_t*)(&(enteteTCP->urg_ptr)) + 2;
+			u_int32_t* curseur;
+			while(*option != 0x0)
+			{
+				switch(*option)
+				{
+					case 1:
+						printf("NOP ");
+						break;
+					case 2:
+						printf("Maximum segment size: %d ",*((u_int16_t*)(option+2)));
+						break;
+					case 3:
+						printf("Window Scale: %d ",*((u_int8_t*)(option+2)));
+						break;
+					case 4:
+						printf("SACK permitted ");
+						break;
+					case 5:
+						printf("SACK ");
+
+						if(verbose == 3)
+						{
+							curseur = (u_int32_t*)(option+2);
+							while(curseur != (u_int32_t*)(option + *(option+1)))
+							{
+								printf("Left edge: %x\n",*curseur);
+								curseur++;
+								printf("Right edge: %x\n",*curseur);
+								curseur++;
+							}
+						}
+						break;
+					default:
+						printf("Unreconized option ");
+						break;
+				}
+
+				option += *(option+1);
+			}
+			printf("End of option list");
+		}
 	}
 
 	//TODO traiter bourrage
