@@ -114,13 +114,15 @@ void treatTCP(void* entete,int len)
 		printf("Urgent pointer %d\n",ntohs(enteteTCP->urg_ptr)); 	//XXX quel boutisme?
 	}
 
+	void* enteteNiv7 = entete +4*hdrLen;
+
 	if(verbose >= 2)
 	{
 		if(hdrLen > 5)
 		{
 			u_int8_t* option = (u_int8_t*)(&(enteteTCP->urg_ptr)) + 2;
 			u_int32_t* curseur;
-			while(*option != 0x0)
+			while(option < (u_int8_t*)enteteNiv7 && *option != 0)
 			{
 				switch(*option)
 				{
@@ -158,14 +160,16 @@ void treatTCP(void* entete,int len)
 
 				option += *(option+1);
 			}
-			printf("End of option list");
+			if(option < (u_int8_t*)enteteNiv7 && *option == 0)
+			{
+				printf("End of option list");
+			}
 		}
 	}
 
 	//TODO traiter bourrage
 
 
-	void* enteteNiv7 = entete +4*hdrLen;
 
 	len -= 4*hdrLen;
 
