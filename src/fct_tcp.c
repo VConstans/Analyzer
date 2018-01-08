@@ -200,5 +200,15 @@ void treatTCP(void* entete,int len)
 		{
 			treatTelnet(enteteNiv7,len);
 		}
+
+		if(source == 110 || destination == 110)
+		{
+			treatPOP(enteteNiv7,len);
+		}
+
+		if(source == 143 || destination == 143)
+		{
+			treatIMAP(enteteNiv7,len);
+		}
 	}
 }
