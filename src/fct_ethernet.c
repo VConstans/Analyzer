@@ -7,7 +7,7 @@ void treatEthernet(void* entete)
 
 	if(verbose >= 2)
 	{
-		printf("ETHERNET: ");
+		printf("Ethernet: ");
 	}
 
 	struct ether_header* enteteEth = (struct ether_header*)entete;
@@ -26,7 +26,7 @@ void treatEthernet(void* entete)
 	if(verbose >= 2)
 	{
 		printf("EtherType: ");
-		printf("%x\n",ether_type);
+		printf("%x ",ether_type);
 	}
 
 

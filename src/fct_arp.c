@@ -57,9 +57,6 @@ void treatARP(void* entete)
 			case ARPHRD_ETHER:
 				printf("Ethernet");
 				break;
-
-			//TODO autre cas
-			//TODO default
 		}
 		printf("\n");
 
@@ -71,7 +68,6 @@ void treatARP(void* entete)
 			case 0x800:
 				printf("IP");
 				break;
-			//TODO default
 		}
 		printf("\n");
 
@@ -82,9 +78,6 @@ void treatARP(void* entete)
 			case 6:
 				printf("Ethernet");
 				break;
-
-			//TODO autre cas
-			//TODO default
 		}
 		printf("\n");
 
@@ -99,7 +92,6 @@ void treatARP(void* entete)
 			case 16:
 				printf("IPv6");
 				break;
-			//TODO default
 		}
 		printf("\n");
 		printLevelLayer();
@@ -149,7 +141,6 @@ void treatARP(void* entete)
 				case 16:
 					printIPv6Addr((u_int8_t*)addrTmp);
 					break;
-				//TODO default
 			}
 		}
 		else
@@ -215,7 +206,6 @@ void treatARP(void* entete)
 			case 16:
 				printIPv6Addr((u_int8_t*)addrTmp);
 				break;
-			//TODO default
 		}
 	}
 	else

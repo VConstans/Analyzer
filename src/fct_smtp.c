@@ -6,8 +6,6 @@ void treatSMTP(void* entete, int len)
 	extern int verbose;
 	levelPrinting = 3;
 
-	if(verbose >= 2)
-	{
 		if(verbose == 3)
 		{
 			printLevelLayer();
@@ -21,7 +19,6 @@ void treatSMTP(void* entete, int len)
 		{
 			printf("\t");
 		}
-	}
 
 
 	u_int8_t* smtpPayload = (u_int8_t*)entete;
@@ -46,7 +43,7 @@ void treatSMTP(void* entete, int len)
 	{
 		i = 0;
 		printf("Request: ");
-		while(smtpPayload[i] != ' ')
+		while(smtpPayload[i] != ' ' && smtpPayload[i] != '\n')
 		{
 			printf("%c",smtpPayload[i]);
 			i++;
@@ -99,7 +96,7 @@ void treatSMTP(void* entete, int len)
 			{
 				for(;i<len;i++)
 				{
-					printf("%c",smtpPayload[i]);
+					printHexToAscii(smtpPayload[i]);
 				}
 			}
 		}

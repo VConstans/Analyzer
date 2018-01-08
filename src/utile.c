@@ -23,10 +23,6 @@ void printIPv4Addr(u_int32_t addr)
 
 		addr = addr>>8;
 	}	
-	if(verbose >= 2)
-	{
-		printf("\n");
-	}
 }
 
 void printIPv4Addr_u_int8(u_int8_t* addr)
@@ -47,10 +43,6 @@ void printIPv4Addr_u_int8(u_int8_t* addr)
 
 		addr = addr+1;
 	}	
-	if(verbose >= 2)
-	{
-		printf("\n");
-	}
 }
 
 
@@ -65,10 +57,6 @@ void printIPv6Addr(uint8_t* addr)
 		{
 			printf(":");
 		}
-	}
-	if(verbose >= 2)
-	{
-		printf("\n");
 	}
 }
 
@@ -85,10 +73,6 @@ void printEthAddr(u_int8_t addr[])
 			printf(":");
 		}
 	}
-	if(verbose >= 2)
-	{
-		printf("\n");
-	}
 }
 
 
@@ -104,9 +88,15 @@ void printLevelLayer()
 
 void printHexToAscii(u_int8_t car)
 {
-	if(car != 0x0a)
+	switch(car)
 	{
-		printf("%c",car);
+		case 0x0a:
+			printf("\n");
+			break;
+		case 0x0d:
+			break;
+		default:
+			printf("%c",car);
 	}
 }
 

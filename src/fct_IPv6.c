@@ -61,13 +61,14 @@ void treatIPv6(void* entete)
 		if(verbose == 3)
 		{
 			printf("\n");
+			printLevelLayer();
+		}
+		else
+		{
+			printf("\t");
 		}
 	}
 
-	if(verbose == 3)
-	{
-		printLevelLayer();
-	}
 	printf("Source Address: ");
 	printIPv6Addr(enteteIP->ip6_src.__in6_u.__u6_addr8);
 
@@ -83,6 +84,7 @@ void treatIPv6(void* entete)
 
 	printf("Destination Address: ");
 	printIPv6Addr(enteteIP->ip6_dst.__in6_u.__u6_addr8);
+	printf("\t");
 
 
 	void* enteteNiv4 = entete + sizeof(struct ip6_hdr);

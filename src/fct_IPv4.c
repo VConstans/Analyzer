@@ -83,6 +83,7 @@ void treatIPv4(void* entete)
 	}
 	printf("Adresse source ");
 	printIPv4Addr(enteteIP->saddr);
+	printf("\t");
 
 	if(verbose == 3)
 	{

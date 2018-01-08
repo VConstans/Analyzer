@@ -11,7 +11,7 @@ void got_packets(u_char* args,const struct pcap_pkthdr* header, const u_char* pa
 
 	num_pkt++;
 
-	printf("Packet n° %di :",num_pkt);
+	printf("Packet num %d :",num_pkt);
 
 	if(verbose >= 2)
 	{

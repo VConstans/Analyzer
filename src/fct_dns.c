@@ -86,7 +86,9 @@ u_int8_t* printLabel(u_int8_t* name, u_int8_t* entete)
 
 u_int8_t* decodeAnswer(u_int8_t* curseur,u_int8_t* entete)
 {
+	printLevelLayer();
 	u_int8_t* finName = printLabel(curseur,entete);
+	printf("\n");
 	struct dns_answer* answer = (struct dns_answer*)finName;
 
 	u_int16_t class = ntohs(answer->aclass);
@@ -115,6 +117,7 @@ u_int8_t* decodeAnswer(u_int8_t* curseur,u_int8_t* entete)
 				{
 					printf("Adress: ");
 					printIPv4Addr_u_int8(&answer->adata);
+					printf("\n");
 				}
 				else
 				{
@@ -163,6 +166,7 @@ u_int8_t* decodeAnswer(u_int8_t* curseur,u_int8_t* entete)
 				{
 					printf("Adress: ");
 					printIPv6Addr(&answer->adata);
+					printf("\n");
 				}
 				else
 				{
@@ -185,21 +189,18 @@ void treatDNS(void* entete)
 	extern int verbose;
 	levelPrinting = 3;
 
-	if(verbose >= 2)
+	if(verbose == 3)
 	{
-		if(verbose == 3)
-		{
-			printLevelLayer();
-		}
-		printf("DNS");
-		if(verbose == 3)
-		{
-			printf("\n");
-		}
-		else
-		{
-			printf("\t");
-		}
+		printLevelLayer();
+	}
+	printf("DNS:");
+	if(verbose == 3)
+	{
+		printf("\n");
+	}
+	else
+	{
+		printf("\t");
 	}
 	struct dns_header* enteteDNS = (struct dns_header*)entete;
 
@@ -219,60 +220,43 @@ void treatDNS(void* entete)
 		printf("Flags: %x ",flags);
 	}
 
-	if(verbose == 3)
-	{
-		printLevelLayer();
-	}
 	if((flags & 0x8000) >> 15)
 	{
-		printf("Response ");
+		printf("Response, ");
 	}
 	else
 	{
-		printf("Query ");
+		printf("Query, ");
 	}
 
-	if(verbose == 3)
-	{
-		printLevelLayer();
-	}
 	if(verbose >= 2)
 	{
-		printf("Flags: ");
 		switch((flags & 0x7800) >> 11)
 		{
 			case 0:
-				printf("Standard Query ");
+				printf("Standard Query, ");
 				break;
 			case 1:
-				printf("Inverse Query ");
+				printf("Inverse Query, ");
 				break;
 			case 2:
-				printf("Server Status Request ");
+				printf("Server Status Request, ");
 				break;
 			case 4:
-				printf("Notify ");
+				printf("Notify, ");
 				break;
 			case 5:
-				printf("Update ");
+				printf("Update, ");
 				break;
 			default:
-				printf("Unreconized dns opcode ");
+				printf("Unreconized dns opcode, ");
 				break;
 		}
-		if(verbose == 3)
-		{
-			printf("\n");
-		}
-		else
-		{
-			printf("\t");
-		}
 
-		if((flags & 0x400) >> 10)	{printf("Authoritative Answer ");}
-		if((flags & 0x200) >> 9)	{printf("Truncate message ");}
-		if((flags & 0x100) >> 8)	{printf("Recursion Desired ");}
-		if((flags & 0x80) >> 7)		{printf("Recursion Available ");}
+		if((flags & 0x400) >> 10)	{printf("Authoritative Answer, ");}
+		if((flags & 0x200) >> 9)	{printf("Truncate message, ");}
+		if((flags & 0x100) >> 8)	{printf("Recursion Desired, ");}
+		if((flags & 0x80) >> 7)		{printf("Recursion Available, ");}
 
 		switch(flags & 0xf)
 		{
@@ -335,6 +319,7 @@ void treatDNS(void* entete)
 
 		for(i=0;i<nquestion;i++)
 		{
+			printLevelLayer();
 			u_int8_t* finName = printLabel(curseur,entete);
 			printf("\n");
 			struct dns_querie* querie = (struct dns_querie*)finName;
@@ -344,6 +329,7 @@ void treatDNS(void* entete)
 
 			curseur = finName + 4;
 		}
+		printf("\n");
 
 		if(nanswer > 0)
 		{
@@ -354,6 +340,7 @@ void treatDNS(void* entete)
 		{
 			curseur = decodeAnswer(curseur,entete);
 		}
+		printf("\n");
 
 		if(nauth > 0)
 		{
@@ -364,6 +351,7 @@ void treatDNS(void* entete)
 		{
 			curseur = decodeAnswer(curseur,entete);
 		}
+		printf("\n");
 
 		if(nother > 0)
 		{
@@ -374,5 +362,6 @@ void treatDNS(void* entete)
 		{
 			curseur = decodeAnswer(curseur,entete);
 		}
+		printf("\n");
 	}
 }

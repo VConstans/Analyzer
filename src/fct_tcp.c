@@ -91,7 +91,6 @@ void treatTCP(void* entete,int len)
 		{
 			printf("RST ");
 		}
-		//TODO autre flags
 		if(verbose == 3)
 		{
 			printf("\n");
@@ -122,24 +121,25 @@ void treatTCP(void* entete,int len)
 		{
 			u_int8_t* option = (u_int8_t*)(&(enteteTCP->urg_ptr)) + 2;
 			u_int32_t* curseur;
-			while(option < (u_int8_t*)enteteNiv7 && *option != 0)
+			printLevelLayer();
+			while(option < (u_int8_t*)enteteNiv7-1 && *option != 0)
 			{
 				switch(*option)
 				{
 					case 1:
-						printf("NOP ");
+						printf("NOP, ");
 						break;
 					case 2:
-						printf("Maximum segment size: %d ",*((u_int16_t*)(option+2)));
+						printf("Maximum segment size: %d, ",*((u_int16_t*)(option+2)));
 						break;
 					case 3:
-						printf("Window Scale: %d ",*((u_int8_t*)(option+2)));
+						printf("Window Scale: %d, ",*((u_int8_t*)(option+2)));
 						break;
 					case 4:
-						printf("SACK permitted ");
+						printf("SACK permitted, ");
 						break;
 					case 5:
-						printf("SACK ");
+						printf("SACK, ");
 
 						if(verbose == 3)
 						{
@@ -147,18 +147,27 @@ void treatTCP(void* entete,int len)
 							while(curseur != (u_int32_t*)(option + *(option+1)))
 							{
 								printf("Left edge: %x\n",*curseur);
+								printLevelLayer();
 								curseur++;
 								printf("Right edge: %x\n",*curseur);
+								printLevelLayer();
 								curseur++;
 							}
 						}
 						break;
 					default:
-						printf("Unreconized option ");
+						printf("Unreconized option, ");
 						break;
 				}
 
-				option += *(option+1);
+				if(*option == NOP)
+				{
+					option ++;
+				}
+				else
+				{
+					option += *(option+1);
+				}
 			}
 			if(option < (u_int8_t*)enteteNiv7 && *option == 0)
 			{

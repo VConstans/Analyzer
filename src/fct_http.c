@@ -6,21 +6,18 @@ void treatHTTP(void* entete, int len)
 	extern int verbose;
 	levelPrinting = 3;
 
-	if(verbose >= 2)
+	if(verbose == 3)
 	{
-		if(verbose == 3)
-		{
-			printLevelLayer();
-		}
-		printf("HTTP:");
-		if(verbose == 3)
-		{
-			printf("\n");
-		}
-		else
-		{
-			printf("\t");
-		}
+		printLevelLayer();
+	}
+	printf("HTTP:");
+	if(verbose == 3)
+	{
+		printf("\n");
+	}
+	else
+	{
+		printf("\t");
 	}
 
 	u_int8_t* httpPayload = (u_int8_t*)entete;
@@ -109,7 +106,7 @@ void treatHTTP(void* entete, int len)
 			{
 				for(;i<len;i++)
 				{
-						printf("%c",httpPayload[i]);
+					printHexToAscii(httpPayload[i]);
 				}
 			}
 		}

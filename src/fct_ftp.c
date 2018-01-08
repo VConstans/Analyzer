@@ -6,21 +6,18 @@ void treatFTP(void* entete, int len)
 	extern int verbose;
 	levelPrinting = 3;
 
-	if(verbose >= 2)
+	if(verbose == 3)
 	{
-		if(verbose == 3)
-		{
-			printLevelLayer();
-		}
-		printf("FTP:");
-		if(verbose ==3)
-		{
-			printf("\n");
-		}
-		else
-		{
-			printf("\t");
-		}
+		printLevelLayer();
+	}
+	printf("FTP:");
+	if(verbose ==3)
+	{
+		printf("\n");
+	}
+	else
+	{
+		printf("\t");
 	}
 
 	u_int8_t* messageFTP = (u_int8_t*)entete;
@@ -110,7 +107,7 @@ void treatFTP(void* entete, int len)
 			printLevelLayer();
 			for(i=0;i<len;i++)
 			{
-				printf("%c",*messageFTP);
+				printHexToAscii(*messageFTP);
 				messageFTP++;
 			}
 		}
