@@ -126,7 +126,7 @@ void treatBootp(void* entete)
 	if(verbose == 3)
 	{
 		int vide = 1;
-		int i
+		int i;
 		printf("sname: ");
 		for(i=0;i<16;i++)
 		{
