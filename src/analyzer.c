@@ -5,6 +5,9 @@ int verbose = 1;
 
 void got_packets(u_char* args,const struct pcap_pkthdr* header, const u_char* packet)
 {
+	if(args){}	//UNUSED
+	if(header){}	//UNUSED
+
 	struct ether_header* enteteEthernet = (struct ether_header*)packet; 
 
 	treatEthernet(enteteEthernet);
