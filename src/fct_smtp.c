@@ -2,62 +2,70 @@
 
 void treatSMTP(void* entete, int len)
 {
-	printLevelLayer();
-	printf("SMTP:\n");
 	extern int levelPrinting;
 	extern int verbose;
 	levelPrinting = 3;
 
-	u_int8_t* smtpPayload = (u_int8_t*)entete;
-/*
-	int i = 0;
-
-	struct listAffichage* listAffichage = getAffichage(...)
-
-	if(listAffichage->in_data)
+	if(verbose >= 2)
 	{
-		if(!memcmp(&smtpPayload[0],".\r\n",3))
+		if(verbose == 3)
 		{
-			listAffichage->affichage = 1;
-			listAffichage->in_data = 0;
+			printLevelLayer();
+		}
+		printf("SMTP:");
+		if(verbose == 3)
+		{
+			printf("\n");
 		}
 		else
 		{
-			for(i=0;i<len;i++)
-			{
-				if(listAffichage->affichage)
-				{
-					printf("%c",smtpPayload[i]);
-				}
-			}
+			printf("\t");
 		}
+	}
+
+
+	u_int8_t* smtpPayload = (u_int8_t*)entete;
+
+	int i;
+	int affiche = 1;
+
+
+	if(smtpPayload[0] >= '0' && smtpPayload[0] <= '9')
+	{
+		printf("Reply code: %c%c%c",smtpPayload[0],smtpPayload[1],smtpPayload[2]);
+		if(verbose == 3)
+		{
+			printf("\n");
+		}
+		else
+		{
+			printf("\t");
+		}
+		//TODO reply message
 	}
 	else
 	{
-
-
-
-
-
-		if(smtpPayload[0] >= '0' && smtpPayload[0] <= '9')
+		i = 0;
+		printf("Request: ");
+		while(smtpPayload[i] != ' ')
 		{
-			printf("Reply code: %c%c%c\n",smtpPayload[0],smtpPayload[1],smtpPayload[2]);
-			i = 3;
-			//TODO reply message
+			printf("%c",smtpPayload[i]);
+			i++;
+		}
+		if(verbose == 3)
+		{
+			printf("\n");
 		}
 		else
 		{
-			printf("Request: ");
-			while(smtpPayload[i] != ' ')
-			{
-				printf("%c",smtpPayload[i]);
-				i++;
-			}
-			printf("\n");
+			printf("\t");
 		}
+	}
 
 
-		for(;i<len;i++)
+	if(verbose >= 2)
+	{
+		for(i=0;i<len;i++)
 		{
 			if(smtpPayload[i] == '\n')
 			{
@@ -65,25 +73,36 @@ void treatSMTP(void* entete, int len)
 				{
 					if(memcmp(&smtpPayload[i+15],"text",4)!= 0)
 					{
-						setAffichage(listAffichage,port,sens,0);
+						affiche = 0;
 					}
 				}
 				if(!memcmp(&smtpPayload[i+1],"Content-Transfer-Encoding: ",18))
 				{
 					if(memcmp(&smtpPayload[19],"8bit",4))
 					{
-						setAffichage(listAffichage,port,sens,0);
+						affiche = 0;
 					}
 				}
 				
 			}
 
-			if(!memcmp(&smtpPayload[0],"DATA",4))
+			if(!memcmp(&smtpPayload[i],"DATA",4))
 			{
-				setDataAffichage(listAffichage,port,sens,1);
+				break;
 			}
 
-			printf("%c",smtpPayload[i]);
+			printHexToAscii(smtpPayload[i]);
 		}
-	}*/
+
+		if(verbose == 3)
+		{
+			if(affiche)
+			{
+				for(;i<len;i++)
+				{
+					printf("%c",smtpPayload[i]);
+				}
+			}
+		}
+	}
 }

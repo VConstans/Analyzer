@@ -3,6 +3,7 @@
 
 #include "utile.h"
 #include "listAffichage.h"
+#include <string.h>
 
 
 void treatSMTP(void*,int);

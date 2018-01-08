@@ -6,85 +6,112 @@ void treatHTTP(void* entete, int len)
 	extern int verbose;
 	levelPrinting = 3;
 
-	printLevelLayer();
-	printf("HTTP:\n");
+	if(verbose >= 2)
+	{
+		if(verbose == 3)
+		{
+			printLevelLayer();
+		}
+		printf("HTTP:");
+		if(verbose == 3)
+		{
+			printf("\n");
+		}
+		else
+		{
+			printf("\t");
+		}
+	}
 
 	u_int8_t* httpPayload = (u_int8_t*)entete;
 	int enteteHTTP = 0;
 
 	if(!memcmp(httpPayload,"HTTP",4))
 	{
-		printLevelLayer();
-		printf("Reply\n");
+		if(verbose == 3)
+		{
+			printLevelLayer();
+		}
+		printf("Reply");
+		if(verbose == 3)
+		{
+			printf("\n");
+		}
+		else
+		{
+			printf("\t");
+		}
 		enteteHTTP = 1;
 	}
 	else if(!memcmp(httpPayload,"GET",3) || !memcmp(httpPayload,"POST",4) || !memcmp(httpPayload,"HEAD",4))
 	{
-		printLevelLayer();
-		printf("Request ");
+		if(verbose == 3)
+		{
+			printLevelLayer();
+		}
+		printf("Request");
+		if(verbose == 3)
+		{
+			printf("\n");
+		}
+		else
+		{
+			printf("\t");
+		}
 		enteteHTTP = 1;
 	}
 
 
-	int i = 0;
-	int affiche = 0;
-	if(enteteHTTP)
+	if(verbose >= 2)
 	{
-		affiche = 1;
-		for(i=0;i<len;i++)
+		int i = 0;
+		int affiche = 0;
+		if(enteteHTTP)
 		{
-			if(httpPayload[i] == '\n')
+			affiche = 1;
+			for(i=0;i<len;i++)
 			{
-				if(!memcmp(&httpPayload[i+1],"Content-Type: ",14))
+				if(httpPayload[i] == '\n')
 				{
-					if(memcmp(&httpPayload[i+15],"text",4)!= 0)
+					if(!memcmp(&httpPayload[i+1],"Content-Type: ",14))
+					{
+						if(memcmp(&httpPayload[i+15],"text",4)!= 0)
+						{
+							affiche = 0;
+						}
+					}
+					if(!memcmp(&httpPayload[i+1],"Content-Encoding: ",18))
 					{
 						affiche = 0;
 					}
 				}
-				if(!memcmp(&httpPayload[i+1],"Content-Encoding: ",18))
+
+				if(httpPayload[i] == '\r')
 				{
-					affiche = 0;
-				}
-/*
-				if(!memcmp(&httpPayload[i+1],"Content-Length: ",16))
-				{
-					int j=i+17;
-					while(httpPayload[j] != '\r')
+					if(!memcmp(&httpPayload[i],"\r\n\r\n",4))
 					{
-						j++;
+						break;
 					}
-					httpPayload[j] = '\0';
-					int length = atoi(httpPayload[i+17]);
-					setLength(listLength,id,length);
-					httpPayload[j] = '\r';
-				}*/
-			}
+				}
 
-			if(httpPayload[i] == '\r')
-			{
-				if(!memcmp(&httpPayload[i],"\r\n\r\n",4))
+				if(httpPayload[i-1] == '\n')
 				{
-					break;
+					printLevelLayer();
+				}
+
+				printHexToAscii(httpPayload[i]);
+			}
+		}
+
+		if(verbose == 3)
+		{
+			if(affiche)
+			{
+				for(;i<len;i++)
+				{
+						printf("%c",httpPayload[i]);
 				}
 			}
-
-			if(httpPayload[i-1] == '\n')
-			{
-				printLevelLayer();
-			}
-
-			printHexToAscii(httpPayload[i]);
 		}
-	}
-
-//	struct listLength* maillonLength = getLength(listLength,id);
-	if(affiche)	//TODO  tenir compte de content len
-	{
-		for(;i<len;i++)
-		{
-				printf("%c",httpPayload[i]);
-		}
-//		maillonLength->length--;
 	}
 }
