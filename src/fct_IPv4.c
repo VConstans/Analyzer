@@ -97,10 +97,6 @@ void treatIPv4(void* entete)
 	printIPv4Addr(enteteIP->daddr);
 	printf("\t");
 
-	if(enteteIP->ihl > 5)
-	{
-		//TODO traitement options
-	}
 
 	if(verbose >= 2)
 	{

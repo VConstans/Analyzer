@@ -30,7 +30,6 @@ void treatEthernet(void* entete)
 	}
 
 
-	//TODO CRC
 
 	void* enteteNiv3;
 	enteteNiv3 = entete+sizeof(struct ether_header);

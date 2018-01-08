@@ -41,7 +41,6 @@ void treatSMTP(void* entete, int len)
 		{
 			printf("\t");
 		}
-		//TODO reply message
 	}
 	else
 	{
