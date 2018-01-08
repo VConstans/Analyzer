@@ -104,13 +104,18 @@ void treatIPv4(void* entete)
 		printf("\n");
 	}
 
+	//Calcul du debut de l'entete de la couche transport
 	void* enteteNiv4 = entete+4*enteteIP->ihl;
 
+	/* Appelle de la bonne fonction de traitement de la couche transport
+	selon la valeur du champ protocol */
 	switch(enteteIP->protocol)
 	{
+		//TCP
 		case 0x06:
 			treatTCP(enteteNiv4,len-4*enteteIP->ihl);
 			break;
+		//UDP
 		case 0x11:
 			treatUDP(enteteNiv4);
 			break;

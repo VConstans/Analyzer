@@ -1,5 +1,6 @@
 #include "fct_UDP.h"
 
+/* Display information about UDP header */
 void treatUDP(void* entete)
 {
 	extern int levelPrinting;
@@ -23,6 +24,7 @@ void treatUDP(void* entete)
 
 	struct udphdr* enteteUDP = (struct udphdr*)entete;
 
+	//Mise des informations dans le bon boutisme
 	u_int16_t source = ntohs(enteteUDP->source);
 	u_int16_t destination = ntohs(enteteUDP->dest);
 	u_int16_t lg = ntohs(enteteUDP->len);
@@ -56,6 +58,7 @@ void treatUDP(void* entete)
 	}
 
 
+	//Calcul du debut de l'entete de niveau applicatif
 	void* enteteNiv7 = entete + sizeof(struct udphdr);
 
 	if(verbose >= 2)
@@ -63,6 +66,8 @@ void treatUDP(void* entete)
 		printf("\n");
 	}
 
+	/* Appelle de la fonction de traitement applicatif si il y a
+	des données utiles à lui faire passer */
 	if(lg > 8)
 	{
 		//BOOTP

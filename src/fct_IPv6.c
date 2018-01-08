@@ -1,5 +1,6 @@
 #include "fct_IPv6.h"
 
+/* Display information about IPv6 header */
 void treatIPv6(void* entete)
 {
 	extern int levelPrinting;
@@ -14,6 +15,7 @@ void treatIPv6(void* entete)
 
 	struct ip6_hdr* enteteIP = (struct ip6_hdr*)entete;
 
+	//Extraction du numéro de version, de la classe et du label
 	u_int32_t ctl = ntohl(enteteIP->ip6_ctlun.ip6_un1.ip6_un1_flow);
 
 	u_int8_t version = (ctl & 0xF0000000) >> 28;
@@ -87,6 +89,7 @@ void treatIPv6(void* entete)
 	printf("\t");
 
 
+	//Calcul du début de l'entete du protocol de transport
 	void* enteteNiv4 = entete + sizeof(struct ip6_hdr);
 
 	if(verbose >=2)
@@ -94,11 +97,15 @@ void treatIPv6(void* entete)
 		printf("\n");
 	}
 
+	/* Appelle de la bonne fonction de traitement du protocol
+	de transport selon la valeur de next header */
 	switch(enteteIP->ip6_ctlun.ip6_un1.ip6_un1_nxt)
 	{
+		//TCP
 		case 0x06:
 			treatTCP(enteteNiv4,len);
 			break;
+		//UDP
 		case 0x11:
 			treatUDP(enteteNiv4);
 			break;

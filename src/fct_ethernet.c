@@ -1,6 +1,5 @@
 #include "fct_ethernet.h"
 
-
 void treatEthernet(void* entete)
 {
 	extern int verbose;
@@ -36,9 +35,10 @@ void treatEthernet(void* entete)
 	enteteNiv3 = entete+sizeof(struct ether_header);
 	
 
-	//Appelle de la bonne fonction de couche 2 selon l'ether type
+	//Appelle de la bonne fonction de couche 3 selon l'ether type
 	switch(ether_type)
 	{
+		//IPv4
 		case 0x0800:
 			if(verbose >= 2)
 			{
@@ -50,6 +50,7 @@ void treatEthernet(void* entete)
 			}
 			treatIPv4(enteteNiv3);
 			break;
+		//IPv6
 		case 0x86dd:
 			if(verbose >= 2)
 			{
@@ -61,6 +62,7 @@ void treatEthernet(void* entete)
 			}
 			treatIPv6(enteteNiv3);
 			break;
+		//ARP
 		case 0x0806:
 			if(verbose >= 2)
 			{
@@ -79,3 +81,4 @@ void treatEthernet(void* entete)
 
 	printf("\n\n");
 }
+
