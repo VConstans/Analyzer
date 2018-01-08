@@ -185,19 +185,44 @@ void treatDNS(void* entete)
 	extern int verbose;
 	levelPrinting = 3;
 
-	printLevelLayer();
-	printf("DNS\n");
-
+	if(verbose >= 2)
+	{
+		if(verbose == 3)
+		{
+			printLevelLayer();
+		}
+		printf("DNS");
+		if(verbose == 3)
+		{
+			printf("\n");
+		}
+		else
+		{
+			printf("\t");
+		}
+	}
 	struct dns_header* enteteDNS = (struct dns_header*)entete;
 
-	printLevelLayer();
-	printf("Identifier: %x\n",ntohs(enteteDNS->tid));
+	if(verbose == 3)
+	{
+		printLevelLayer();
+		printf("Identifier: %x\n",ntohs(enteteDNS->tid));
+	}
 
 	u_int16_t flags = ntohs(enteteDNS->flags);
-	printLevelLayer();
-	printf("Flags: %x ",flags);
+	if(verbose >= 2)
+	{
+		if(verbose == 3)
+		{
+			printLevelLayer();
+		}
+		printf("Flags: %x ",flags);
+	}
 
-	printLevelLayer();
+	if(verbose == 3)
+	{
+		printLevelLayer();
+	}
 	if((flags & 0x8000) >> 15)
 	{
 		printf("Response ");
@@ -207,57 +232,80 @@ void treatDNS(void* entete)
 		printf("Query ");
 	}
 
-	printLevelLayer();
-	printf("Flags: ");
-	switch((flags & 0x7800) >> 11)
+	if(verbose == 3)
 	{
-		case 0:
-			printf("Standard Query ");
-			break;
-		case 1:
-			printf("Inverse Query ");
-			break;
-		case 2:
-			printf("Server Status Request ");
-			break;
-		case 4:
-			printf("Notify ");
-			break;
-		case 5:
-			printf("Update ");
-			break;
-		default:
-			printf("Unreconized dns opcode ");
-			break;
+		printLevelLayer();
 	}
-
-	if((flags & 0x400) >> 10)	{printf("Authoritative Answer ");}
-	if((flags & 0x200) >> 9)	{printf("Truncate message ");}
-	if((flags & 0x100) >> 8)	{printf("Recursion Desired ");}
-	if((flags & 0x80) >> 7)		{printf("Recursion Available ");}
-
-	switch(flags & 0xf)
+	if(verbose >= 2)
 	{
-		case 0:
-			printf("No error\n");
-			break;
-		case 1:
-			printf("Format Error\n");
-			break;
-		case 2:
-			printf("Server Failure\n");
-			break;
-		case 3:
-			printf("Name Error\n");
-			break;
-		case 4:
-			printf("Not Implemented\n");
-			break;
-		case 5:
-			printf("Refused\n");
-			break;
-		default:
-			printf("Unreconized Reply Code\n");
+		printf("Flags: ");
+		switch((flags & 0x7800) >> 11)
+		{
+			case 0:
+				printf("Standard Query ");
+				break;
+			case 1:
+				printf("Inverse Query ");
+				break;
+			case 2:
+				printf("Server Status Request ");
+				break;
+			case 4:
+				printf("Notify ");
+				break;
+			case 5:
+				printf("Update ");
+				break;
+			default:
+				printf("Unreconized dns opcode ");
+				break;
+		}
+		if(verbose == 3)
+		{
+			printf("\n");
+		}
+		else
+		{
+			printf("\t");
+		}
+
+		if((flags & 0x400) >> 10)	{printf("Authoritative Answer ");}
+		if((flags & 0x200) >> 9)	{printf("Truncate message ");}
+		if((flags & 0x100) >> 8)	{printf("Recursion Desired ");}
+		if((flags & 0x80) >> 7)		{printf("Recursion Available ");}
+
+		switch(flags & 0xf)
+		{
+			case 0:
+				printf("No error");
+				break;
+			case 1:
+				printf("Format Error");
+				break;
+			case 2:
+				printf("Server Failure");
+				break;
+			case 3:
+				printf("Name Error");
+				break;
+			case 4:
+				printf("Not Implemented");
+				break;
+			case 5:
+				printf("Refused");
+				break;
+			default:
+				printf("Unreconized Reply Code");
+		}
+
+		if(verbose == 3)
+		{
+			printf("\n");
+		}
+		else
+		{
+			printf("\t");
+		}
 	}
 
 	u_int16_t nquestion = ntohs(enteteDNS->nqueries);
@@ -265,63 +313,66 @@ void treatDNS(void* entete)
 	u_int16_t nauth = ntohs(enteteDNS->nauth);
 	u_int16_t nother = ntohs(enteteDNS->nother);
 
-	printLevelLayer();
-	printf("Questions: %d\n",nquestion);
-	printLevelLayer();
-	printf("Answer RR: %d\n",nanswer);
-	printLevelLayer();
-	printf("Authority RR: %d\n",nauth);
-	printLevelLayer();
-	printf("Additional RR: %d\n",nother);
-
-	u_int8_t* curseur = &(enteteDNS->data);
-
-	int i;
-	if(nquestion > 0)
+	if(verbose == 3)
 	{
 		printLevelLayer();
-		printf("Queries\n");
-	}
-
-	for(i=0;i<nquestion;i++)
-	{
-		u_int8_t* finName = printLabel(curseur,entete);
-		printf("\n");
-		struct dns_querie* querie = (struct dns_querie*)finName;
-
-		decodeType(ntohs(querie->qtype));
-		decodeClass(ntohs(querie->qclass));
-
-		curseur = finName + 4;
-	}
-
-	if(nanswer > 0)
-	{
+		printf("Questions: %d\n",nquestion);
 		printLevelLayer();
-		printf("Answer\n");
-	}
-	for(i=0;i<nanswer;i++)
-	{
-		curseur = decodeAnswer(curseur,entete);
-	}
-
-	if(nauth > 0)
-	{
+		printf("Answer RR: %d\n",nanswer);
 		printLevelLayer();
-		printf("Authtority Record\n");
-	}
-	for(i=0;i<nauth;i++)
-	{
-		curseur = decodeAnswer(curseur,entete);
-	}
-
-	if(nother > 0)
-	{
+		printf("Authority RR: %d\n",nauth);
 		printLevelLayer();
-		printf("Additional Record\n");
-	}
-	for(i=0;i<nother;i++)
-	{
-		curseur = decodeAnswer(curseur,entete);
+		printf("Additional RR: %d\n",nother);
+
+		u_int8_t* curseur = &(enteteDNS->data);
+
+		int i;
+		if(nquestion > 0)
+		{
+			printLevelLayer();
+			printf("Queries\n");
+		}
+
+		for(i=0;i<nquestion;i++)
+		{
+			u_int8_t* finName = printLabel(curseur,entete);
+			printf("\n");
+			struct dns_querie* querie = (struct dns_querie*)finName;
+
+			decodeType(ntohs(querie->qtype));
+			decodeClass(ntohs(querie->qclass));
+
+			curseur = finName + 4;
+		}
+
+		if(nanswer > 0)
+		{
+			printLevelLayer();
+			printf("Answer\n");
+		}
+		for(i=0;i<nanswer;i++)
+		{
+			curseur = decodeAnswer(curseur,entete);
+		}
+
+		if(nauth > 0)
+		{
+			printLevelLayer();
+			printf("Authtority Record\n");
+		}
+		for(i=0;i<nauth;i++)
+		{
+			curseur = decodeAnswer(curseur,entete);
+		}
+
+		if(nother > 0)
+		{
+			printLevelLayer();
+			printf("Additional Record\n");
+		}
+		for(i=0;i<nother;i++)
+		{
+			curseur = decodeAnswer(curseur,entete);
+		}
 	}
 }
