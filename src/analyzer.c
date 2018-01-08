@@ -2,11 +2,25 @@
 
 int levelPrinting = 0;
 int verbose = 1;
+static int num_pkt = 0;
 
 void got_packets(u_char* args,const struct pcap_pkthdr* header, const u_char* packet)
 {
 	if(args){}	//UNUSED
 	if(header){}	//UNUSED
+
+	num_pkt++;
+
+	printf("Packet n° %di :",num_pkt);
+
+	if(verbose >= 2)
+	{
+		printf("\n");
+	}
+	else
+	{
+		printf("  ");
+	}
 
 	struct ether_header* enteteEthernet = (struct ether_header*)packet; 
 
