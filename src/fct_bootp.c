@@ -223,9 +223,6 @@ void decodeDHCPOption(u_int8_t* ptrOption)
 			printf("\n");
 			break;
 
-		case TAG_TIME_OFFSET:
-			//TODO 
-			break;
 
 		case TAG_GATEWAY:
 			printf("Gateway: ");
@@ -266,7 +263,6 @@ void decodeDHCPOption(u_int8_t* ptrOption)
 			printf("\n");
 			break;
 
-		//TODO case netbios 44 et 47
 
 
 		case TAG_REQUESTED_IP:
@@ -277,13 +273,12 @@ void decodeDHCPOption(u_int8_t* ptrOption)
 
 		case TAG_IP_LEASE:
 			printf("Lease time: ");
-			//TODO
+			printf("%d",ntohl(*((u_int32_t*)value)));
 			printf("\n");
 			break;
 
 		case TAG_SERVER_ID:
 			printf("Server identifier: ");
-			//TODO verifier taille adresse
 			printIPv4Addr_u_int8(value);
 			printf("\n");
 			break;

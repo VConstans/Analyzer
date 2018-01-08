@@ -1,5 +1,6 @@
 #include "fct_arp.h"
 
+/* Display information about ARP header */
 void treatARP(void* entete)
 {
 	extern int levelPrinting;

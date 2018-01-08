@@ -1,7 +1,7 @@
 #include "fct_IPv4.h"
 
 
-
+/* Display information about IPv4 header */
 void treatIPv4(void* entete)
 {
 	extern int levelPrinting;

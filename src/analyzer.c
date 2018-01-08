@@ -1,7 +1,12 @@
 #include "analyzer.h"
 
+//Nombre de tabulation selon le niveau de la couche
 int levelPrinting = 0;
+
+//Niveau de verbosite
 int verbose = 1;
+
+//Nombre de paquets
 static int num_pkt = 0;
 
 /* Receive packet and treat it */

@@ -154,7 +154,6 @@ void treatTelnet(void* entete,int len)
 									}
 
 									break;
-								//TODO environment variable
 								default:
 									printf("Unreconized Sub Option\n");
 									break;

@@ -110,7 +110,7 @@ void treatTCP(void* entete,int len)
 		printf("Checksum %x\n",ntohs(enteteTCP->check)); 
 
 		printLevelLayer();
-		printf("Urgent pointer %d\n",ntohs(enteteTCP->urg_ptr)); 	//XXX quel boutisme?
+		printf("Urgent pointer %d\n",ntohs(enteteTCP->urg_ptr));
 	}
 
 	void* enteteNiv7 = entete +4*hdrLen;
@@ -176,7 +176,6 @@ void treatTCP(void* entete,int len)
 		}
 	}
 
-	//TODO traiter bourrage
 
 
 
@@ -187,7 +186,7 @@ void treatTCP(void* entete,int len)
 		printf("\n");
 	}
 
-	if(len > 0 /*&& enteteTCP->psh*/)
+	if(len > 0)
 		{
 
 		if(source == 80 || destination == 80)
