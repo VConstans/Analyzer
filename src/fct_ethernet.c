@@ -23,6 +23,7 @@ void treatEthernet(void* entete)
 
 	}
 
+	//Ether Type
 	if(verbose >= 2)
 	{
 		printf("EtherType: ");
@@ -30,10 +31,12 @@ void treatEthernet(void* entete)
 	}
 
 
-
+	//Debut de l'entete de niveau 3
 	void* enteteNiv3;
 	enteteNiv3 = entete+sizeof(struct ether_header);
 	
+
+	//Appelle de la bonne fonction de couche 2 selon l'ether type
 	switch(ether_type)
 	{
 		case 0x0800:

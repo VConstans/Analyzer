@@ -7,30 +7,30 @@
 
 struct dns_header
 {
-	u_int16_t tid;
-	u_int16_t flags;
-	u_int16_t nqueries;
-	u_int16_t nanswers;
-	u_int16_t nauth;
-	u_int16_t nother;
+	u_int16_t tid;		//Identifier
+	u_int16_t flags;	//Flags
+	u_int16_t nqueries;	//Number of queries
+	u_int16_t nanswers;	//Number of Answers
+	u_int16_t nauth;	//Number of Authority Answers
+	u_int16_t nother;	//Number of Additional Answers
 	u_int8_t data;
 };
 
 struct dns_querie
 {
 	/* Name */
-	u_int16_t qtype;
-	u_int16_t qclass;
+	u_int16_t qtype;	//Querie Type
+	u_int16_t qclass;	//Querie Class
 };
 
 struct dns_answer
 {
 	/* Name */
-	u_int16_t atype;
-	u_int16_t aclass;
-	u_int32_t attl;
-	u_int16_t alen;
-	u_int8_t adata;
+	u_int16_t atype;	//Answer type
+	u_int16_t aclass;	//Answer class
+	u_int32_t attl;		//Answer TTL
+	u_int16_t alen;		//Answer Length
+	u_int8_t adata;		//Answer Data
 };
 
 

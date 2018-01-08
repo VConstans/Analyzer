@@ -27,6 +27,7 @@ void treatARP(void* entete)
 	uint8_t pln = enteteARP->ar_pln;
 	uint16_t op = ntohs(enteteARP->ar_op);
 
+	//ARP Operator
 	switch(op)
 	{
 		case ARPOP_REQUEST:
@@ -49,6 +50,7 @@ void treatARP(void* entete)
 
 	if(verbose == 3)
 	{
+		//Hardware type
 		printLevelLayer();
 		printf("Hardware type: %d ",hrd);
 
@@ -61,6 +63,7 @@ void treatARP(void* entete)
 		printf("\n");
 
 
+		//Protocol type
 		printLevelLayer();
 		printf("Protocol type: %d ",pro);
 		switch(pro)
@@ -71,6 +74,7 @@ void treatARP(void* entete)
 		}
 		printf("\n");
 
+		//Hardware length
 		printLevelLayer();
 		printf("Hardware length: %d ",hln);
 		switch(hln)
@@ -82,8 +86,9 @@ void treatARP(void* entete)
 		printf("\n");
 
 
+		//Protocol address length
 		printLevelLayer();
-		printf("Protocol adress length: %d ",pln);
+		printf("Protocol address length: %d ",pln);
 		switch(pln)
 		{
 			case 4:
@@ -100,6 +105,7 @@ void treatARP(void* entete)
 
 	void* addrTmp = entete + sizeof(struct arphdr);
 
+	//Sender Hardware Address
 	if(verbose >= 2)
 	{
 		printf("Sender Hardware Address: ");
@@ -128,11 +134,14 @@ void treatARP(void* entete)
 	}
 
 	addrTmp += hln;
+
+	//Sender Intrnet Address
 	if(verbose >= 2)
 	{
 		printf("Sender Internet Address: ");
 		if(pro == 0x800)
 		{
+			//Affichage de l'adresse IP selon la norme IP definit dans pln
 			switch(pln)
 			{
 				case 4:
@@ -159,15 +168,17 @@ void treatARP(void* entete)
 	}
 	addrTmp += pln;
 
-
+	//Target Hardware Address
 	if(verbose >= 2)
 	{
 		printf("Target Hardware address: ");
 		switch(op)
 		{
+			//Requete ARP
 			case ARPOP_REQUEST:
 				printf("Requete, donc adresse de niveau 2 inconnu");
 				break;
+			//Reponse ARP
 			case ARPOP_REPLY:
 				if(hrd == ARPHRD_ETHER && hln == 6)
 				{
@@ -194,10 +205,11 @@ void treatARP(void* entete)
 
 	addrTmp += hln;
 
-
+	//Target Internet Address
 	printf("Target Internet Address: ");
 	if(pro == 0x800)
 	{
+		//Affichage de l'adresse IP selon la norme IP definit dans pln
 		switch(pln)
 		{
 			case 4:

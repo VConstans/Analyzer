@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include "fct_ethernet.h"
 
-#define INTERFACE 1
-#define FICHIER 2
+#define INTERFACE 1	//Si la source est une interface reseau
+#define FICHIER 2	//Si la source est un fichier
 
 #endif

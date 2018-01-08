@@ -4,6 +4,7 @@ int levelPrinting = 0;
 int verbose = 1;
 static int num_pkt = 0;
 
+/* Receive packet and treat it */
 void got_packets(u_char* args,const struct pcap_pkthdr* header, const u_char* packet)
 {
 	if(args){}	//UNUSED
@@ -54,7 +55,6 @@ int main(int argc,char* argv[])
 
 	char errbuf[PCAP_ERRBUF_SIZE];
 
-	//TODO regarder si l'interface existe
 
 	pcap_t* interface;
 	switch(src)
@@ -73,7 +73,6 @@ int main(int argc,char* argv[])
 
 	pcap_loop(interface,-1,*got_packets,NULL);
 
-	//TODO carpturer SIGINT pour close
 
 	return 0;
 }
